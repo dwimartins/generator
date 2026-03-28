@@ -129,11 +129,24 @@
             </div>
 
             <!-- PENAMBAHAN FITUR URUTAN MEMPELAI -->
-            <label>Urutan Penulisan Nama (Cover & Profil)</label>
-            <select id="urutan_mempelai" onchange="debounceThumb()">
-                <option value="wanita_pria">Wanita Terlebih Dahulu (Cth: Lisa & Palmer)</option>
-                <option value="pria_wanita">Pria Terlebih Dahulu (Cth: Palmer & Lisa)</option>
-            </select>
+            <label class="mb-2">Urutan Penulisan Nama (Cover & Profil)</label>
+            <input type="hidden" id="urutan_mempelai" value="wanita_pria">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                <label class="relative cursor-pointer block">
+                    <input type="radio" name="urutan_radio" value="wanita_pria" class="peer sr-only" checked onchange="document.getElementById('urutan_mempelai').value=this.value; debounceThumb();">
+                    <div class="p-3 bg-gray-800 border border-gray-700 rounded-lg peer-checked:border-yellow-500 peer-checked:bg-yellow-500/10 transition-all text-center text-gray-400 peer-checked:text-yellow-500">
+                        <span class="text-sm font-bold block mb-1">Wanita Terlebih Dahulu</span>
+                        <span class="text-xs opacity-80 block">Cth: Lisa & Palmer</span>
+                    </div>
+                </label>
+                <label class="relative cursor-pointer block">
+                    <input type="radio" name="urutan_radio" value="pria_wanita" class="peer sr-only" onchange="document.getElementById('urutan_mempelai').value=this.value; debounceThumb();">
+                    <div class="p-3 bg-gray-800 border border-gray-700 rounded-lg peer-checked:border-yellow-500 peer-checked:bg-yellow-500/10 transition-all text-center text-gray-400 peer-checked:text-yellow-500">
+                        <span class="text-sm font-bold block mb-1">Pria Terlebih Dahulu</span>
+                        <span class="text-xs opacity-80 block">Cth: Palmer & Lisa</span>
+                    </div>
+                </label>
+            </div>
 
             <label>Lokasi Acara di Sampul (Cover)</label>
             <input type="text" id="lokasi_cover" value="Kota Medan" onchange="debounceThumb()">
@@ -327,11 +340,24 @@
             </div>
             <p class="text-[11px] text-gray-400 mb-4 leading-relaxed">Pengaturan teks yang muncul saat link disebarkan (WhatsApp, IG, FB, dll).</p>
             
-            <label>Jenis Teks Metadata</label>
-            <select id="meta_type" onchange="toggleMetaDemo()">
-                <option value="mempelai">Data Mempelai (Undangan Asli)</option>
-                <option value="demo">Template / Demo (Katalog Web)</option>
-            </select>
+            <label class="mb-2">Jenis Teks Metadata</label>
+            <input type="hidden" id="meta_type" value="mempelai">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <label class="relative cursor-pointer block">
+                    <input type="radio" name="meta_radio" value="mempelai" class="peer sr-only" checked onchange="document.getElementById('meta_type').value=this.value; toggleMetaDemo();">
+                    <div class="p-3 bg-gray-800 border border-gray-700 rounded-lg peer-checked:border-blue-400 peer-checked:bg-blue-500/10 transition-all text-center text-gray-400 peer-checked:text-blue-400 h-full flex flex-col justify-center">
+                        <span class="text-sm font-bold block mb-1">Data Mempelai</span>
+                        <span class="text-xs opacity-80 block">Undangan Asli</span>
+                    </div>
+                </label>
+                <label class="relative cursor-pointer block">
+                    <input type="radio" name="meta_radio" value="demo" class="peer sr-only" onchange="document.getElementById('meta_type').value=this.value; toggleMetaDemo();">
+                    <div class="p-3 bg-gray-800 border border-gray-700 rounded-lg peer-checked:border-blue-400 peer-checked:bg-blue-500/10 transition-all text-center text-gray-400 peer-checked:text-blue-400 h-full flex flex-col justify-center">
+                        <span class="text-sm font-bold block mb-1">Template / Demo</span>
+                        <span class="text-xs opacity-80 block">Katalog Web</span>
+                    </div>
+                </label>
+            </div>
 
             <div id="wrap_meta_demo" class="hidden flex-col gap-2 mt-4 p-4 bg-gray-800 rounded-lg border border-gray-700">
                 <label class="text-blue-300">Judul (Title)</label>
