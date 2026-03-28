@@ -319,5 +319,50 @@ window.SistemLogika = {
         getLogoUrl: function(filename) {
             return this.baseUrl + filename;
         }
+    },
+
+    // ==========================================
+    // MODUL 5: ASET MUSIK (BGM)
+    // ==========================================
+    AssetMusik: {
+        // Daftar lagu default terintegrasi
+        list: [
+            { judul: "Andmesh - Anugerah Terindah (Full - Sempat Ku)", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Andmesh%20-%20Anugerah%20Terindah%20(Full%20-%20Sempat%20Ku).mp3" },
+            { judul: "Ari Lasso - Cinta Terakhir (Reff - Kini)", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Ari%20Lasso%20-%20Cinta%20Terakhir%20(Reff%20-%20Kini).mp3" },
+            { judul: "Arvian Dwi - Satu Shaf Dibelakangku (Reff - Ku Mencintaimu)", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Arvian%20Dwi%20-%20Satu%20Shaf%20Dibelakangku%20(Reff%20-%20Ku%20Mencintaimu).mp3" },
+            { judul: "Brisia Jodie - Aku Memilihmu (Full - Hari Ini)", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Brisia%20Jodie%20-%20Aku%20Memilihmu%20(Full%20-%20Hari%20Ini).mp3" },
+            { judul: "Brisia Jodie - Aku Memilihmu (Reff Wanita)", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Brisia%20Jodie%20-%20Aku%20Memilihmu%20(Reff%20Wanita).mp3" },
+            { judul: "English - Brian McKnight - Marry Your Daughter (Full)", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/English%20-%20Brian%20McKnight%20-%20Marry%20Your%20Daughter%20(Full).mp3" },
+            { judul: "English - Christian Bautista - The Way You Look At Me (Reff - Cause There)", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/English%20-%20Christian%20Bautista%20-%20The%20Way%20You%20Look%20At%20Me%20(Reff%20-%20Cause%20There).mp3" },
+            { judul: "English - Christina Perri - A Thousand Years (Full)", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/English%20-%20Christina%20Perri%20-%20A%20Thousand%20Years%20(Full).mp3" },
+            { judul: "English - Shane Filan - Beautiful In White (Full)", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/English%20-%20Shane%20Filan%20-%20Beautiful%20In%20White%20(Full).mp3" },
+            { judul: "English - Shane Filan - Beautiful In White (Reff - So As)", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/English%20-%20Shane%20Filan%20-%20Beautiful%20In%20White%20(Reff%20-%20So%20As).mp3" },
+            { judul: "English - Stephen Sanchez - Until I Found You", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/English%20-%20Stephen%20Sanchez%20-%20Until%20I%20Found%20You.mp3" },
+            { judul: "Islami - Maher Zain - Baraka-Allahu Lakuma (Full)", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Islami%20-%20Maher%20Zain%20-%20Baraka-Allahu%20Lakuma%20(Full).mp3" },
+            { judul: "Islami - Maher Zain - For The Rest Of My Life (Reff - For The)", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Islami%20-%20Maher%20Zain%20-%20For%20The%20Rest%20Of%20My%20Life%20(Reff%20-%20For%20The).mp3" },
+            { judul: "Islami - Maher Zain - Nas Teshbehlena (Full)", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Islami%20-%20Maher%20Zain%20-%20Nas%20Teshbehlena%20(Full).mp3" },
+            { judul: "Islami - Maher Zain - Rahmatun Lil’Alameen (Full)", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Islami%20-%20Maher%20Zain%20-%20Rahmatun%20Lil%E2%80%99Alameen%20(Full).mp3" },
+            { judul: "Islami - Maher Zain - Ya Nabi Salam Alayka (Reff - Ya Habibi)", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Islami%20-%20Maher%20Zain%20-%20Ya%20Nabi%20Salam%20Alayka%20(Reff%20-%20Ya%20Habibi).mp3" },
+            { judul: "Islami - Maher Zain - Salla Alayka Rahman (Full)", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Islami%20-%20Maher%20Zain%20-Salla%20Alayka%20Rahman%20(Full).mp3" },
+            { judul: "Islami - Maher Zain - Sepanjang Hidup (Reff - Sepanjang)", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Islami%20-%20Maher%20Zain%20-Sepanjang%20Hidup%20(Reff%20-%20Sepanjang).mp3" },
+            { judul: "Islami - Muhammad Al Muqit - Wedding Nasheed (Full - Ala Jabili)", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Islami%20-%20Muhammad%20Al%20Muqit%20-%20Wedding%20Nasheed%20(Full%20-%20Ala%20Jabili).mp3" },
+            { judul: "Islami - Muhammad Youssef - Al Hijratu (Full)", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Islami%20-%20Muhammad%20Youssef%20-%20Al%20Hijratu%20(Full).mp3" },
+            { judul: "Melly Goeslaw - Ketika Cinta Bertasbih (Full)", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Melly%20Goeslaw%20-%20Ketika%20Cinta%20Bertasbih%20(Full).mp3" },
+            { judul: "Nadhif Basalamah - Kota Ini Tak Sama Tanpamu", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Nadhif%20Basalamah%20-%20Kota%20Ini%20Tak%20Sama%20Tanpamu.mp3" },
+            { judul: "Nadhif Basalamah - Penjaga Hati (Full)", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Nadhif%20Basalamah%20-%20Penjaga%20Hati%20(Full).mp3" },
+            { judul: "Naff - Akhirnya Ku Menemukanmu (Full)", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Naff%20-%20Akhirnya%20Ku%20Menemukanmu%20(Full).mp3" },
+            { judul: "Rizky Febian - Bermuara (Reff - Sayang)", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Rizky%20Febian%20-%20Bermuara%20(Reff%20-%20Sayang).mp3" },
+            { judul: "Tiara Andini - Lagu Pernikahan Kita (Full)", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Tiara%20Andini%20-%20Lagu%20Pernikahan%20Kita%20(Full).mp3" },
+            { judul: "Tiara Andini - Lagu Pernikahan Kita (Reff Pria - Demi Tuhan Aku)", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Tiara%20Andini%20-%20Lagu%20Pernikahan%20Kita%20(Reff%20Pria%20-%20Demi%20Tuhan%20Aku).mp3" },
+            { judul: "Yovie & Nuno - Janji Suci (Full)", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Yovie%20&%20Nuno%20-%20Janji%20Suci%20(Full).mp3" }
+        ],
+        
+        getOptionsHTML: function() {
+            let options = '';
+            this.list.forEach(lagu => {
+                options += `<option value="${lagu.url}">${lagu.judul}</option>`;
+            });
+            return options;
+        }
     }
 };
