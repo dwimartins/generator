@@ -137,38 +137,6 @@
 
             <label>Lokasi Acara di Sampul (Cover)</label>
             <input type="text" id="lokasi_cover" value="Kota Medan" onchange="debounceThumb()">
-
-            <label>Pilih Lagu Undangan (BGM)</label>
-            <select id="pilihan_musik" onchange="document.getElementById('url_musik').value = this.value;" style="margin-bottom: 0.5rem;">
-                <option value="">-- Memuat daftar lagu... --</option>
-            </select>
-            <label class="text-[11px] text-gray-400">Atau masukkan Link MP3 Custom di bawah ini:</label>
-            <input type="text" id="url_musik" value="[https://github.com/asetundangan/lagu/raw/refs/heads/main/English%20-%20Stephen%20Sanchez%20-%20Until%20I%20Found%20You.mp3](https://github.com/asetundangan/lagu/raw/refs/heads/main/English%20-%20Stephen%20Sanchez%20-%20Until%20I%20Found%20You.mp3)">
-            <!-- UPDATE FITUR MUSIK SAMPAI SINI -->
-            
-            <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 mt-4 border-t border-gray-700 pt-4">
-                <div class="p-3 bg-gray-800 rounded-md border border-gray-700 flex justify-between items-center">
-                    <div>
-                        <label class="mb-0 text-gray-200 font-bold text-[12px]">Kunci Form RSVP (Versi Demo)</label>
-                        <p class="text-[9px] text-gray-400 mt-1 leading-tight">Pengunjung tidak bisa mengirim pesan iseng</p>
-                    </div>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" id="toggle_demo_mode" class="sr-only peer">
-                        <div class="w-9 h-5 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-yellow-500"></div>
-                    </label>
-                </div>
-
-                <div class="p-3 bg-gray-800 rounded-md border border-gray-700 flex justify-between items-center">
-                    <div>
-                        <label class="mb-0 text-gray-200 font-bold text-[12px]">Aktifkan Filter & Anti-Spam</label>
-                        <p class="text-[9px] text-gray-400 mt-1 leading-tight">Filter kata kasar & batas 1x komen</p>
-                    </div>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" id="toggle_spam_filter" class="sr-only peer" checked>
-                        <div class="w-9 h-5 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-500"></div>
-                    </label>
-                </div>
-            </div>
         </div>
 
         <!-- 2. MEMPELAI WANITA -->
@@ -370,6 +338,44 @@
                 <input type="text" id="meta_demo_title" value="Tema Tanpa Foto Black Gold" class="mb-2">
                 <label class="text-blue-300">Deskripsi (Description)</label>
                 <textarea id="meta_demo_desc" rows="3" class="mb-0">Undangan digital pernikahan tanpa foto dengan nuansa Hitam Emas yang elegan. Klik link berikut untuk melihat preview/demo undangan ini secara langsung.</textarea>
+            </div>
+        </div>
+
+        <!-- 10B. PENGATURAN MUSIK & KEAMANAN -->
+        <div class="form-section">
+            <div class="form-header">
+                <h2 class="form-title"><i class="fas fa-sliders-h text-indigo-400"></i> Pengaturan Musik & Keamanan</h2>
+            </div>
+            
+            <label>Pilih Lagu Undangan (BGM)</label>
+            <select id="pilihan_musik" onchange="document.getElementById('url_musik').value = this.value;" style="margin-bottom: 0.5rem;">
+                <option value="">-- Memuat daftar lagu... --</option>
+            </select>
+            <label class="text-[11px] text-gray-400">Atau masukkan Link MP3 Custom di bawah ini:</label>
+            <input type="text" id="url_musik" value="[https://github.com/asetundangan/lagu/raw/refs/heads/main/English%20-%20Stephen%20Sanchez%20-%20Until%20I%20Found%20You.mp3](https://github.com/asetundangan/lagu/raw/refs/heads/main/English%20-%20Stephen%20Sanchez%20-%20Until%20I%20Found%20You.mp3)">
+            
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 mt-4 border-t border-gray-700 pt-4">
+                <div class="p-3 bg-gray-800 rounded-md border border-gray-700 flex justify-between items-center">
+                    <div>
+                        <label class="mb-0 text-gray-200 font-bold text-[12px]">Kunci Form RSVP (Versi Demo)</label>
+                        <p class="text-[9px] text-gray-400 mt-1 leading-tight">Pengunjung tidak bisa mengirim pesan iseng</p>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="toggle_demo_mode" class="sr-only peer">
+                        <div class="w-9 h-5 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-yellow-500"></div>
+                    </label>
+                </div>
+
+                <div class="p-3 bg-gray-800 rounded-md border border-gray-700 flex justify-between items-center">
+                    <div>
+                        <label class="mb-0 text-gray-200 font-bold text-[12px]">Aktifkan Filter & Anti-Spam</label>
+                        <p class="text-[9px] text-gray-400 mt-1 leading-tight">Filter kata kasar & batas 1x komen</p>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="toggle_spam_filter" class="sr-only peer" checked>
+                        <div class="w-9 h-5 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-500"></div>
+                    </label>
+                </div>
             </div>
         </div>
 
