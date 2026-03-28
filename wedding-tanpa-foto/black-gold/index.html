@@ -138,8 +138,13 @@
             <label>Lokasi Acara di Sampul (Cover)</label>
             <input type="text" id="lokasi_cover" value="Kota Medan" onchange="debounceThumb()">
 
-            <label>Link Musik (MP3)</label>
-            <input type="text" id="url_musik" value="https://github.com/undangandigitalku/laguundangan/raw/refs/heads/main/Until%20I%20Found%20You%20-%20Stephen%20Sanchez.mp3">
+            <label>Pilih Lagu Undangan (BGM)</label>
+            <select id="pilihan_musik" onchange="document.getElementById('url_musik').value = this.value;" style="margin-bottom: 0.5rem;">
+                <option value="">-- Memuat daftar lagu... --</option>
+            </select>
+            <label class="text-[11px] text-gray-400">Atau masukkan Link MP3 Custom di bawah ini:</label>
+            <input type="text" id="url_musik" value="[https://github.com/asetundangan/lagu/raw/refs/heads/main/English%20-%20Stephen%20Sanchez%20-%20Until%20I%20Found%20You.mp3](https://github.com/asetundangan/lagu/raw/refs/heads/main/English%20-%20Stephen%20Sanchez%20-%20Until%20I%20Found%20You.mp3)">
+            <!-- UPDATE FITUR MUSIK SAMPAI SINI -->
             
             <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 mt-4 border-t border-gray-700 pt-4">
                 <div class="p-3 bg-gray-800 rounded-md border border-gray-700 flex justify-between items-center">
@@ -390,6 +395,11 @@
         </div>
 
         <button onclick="window.generateWeb()" class="w-full bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-4 rounded-lg shadow-lg transition-all mb-10 text-lg tracking-wide border border-yellow-400">🚀 GENERATE KODE & PREVIEW</button>
+
+        <!-- TOMBOL GO TO TOP MENGAPUNG -->
+        <button id="btn-go-top" onclick="scrollToTopForm()" class="fixed bottom-24 right-6 md:bottom-10 md:left-[calc(50%-4.5rem)] md:right-auto bg-yellow-600 hover:bg-yellow-500 text-black w-12 h-12 rounded-full shadow-[0_4px_10px_rgba(0,0,0,0.5)] flex items-center justify-center z-50 transition-all duration-300 transform scale-0 opacity-0 border border-yellow-400 focus:outline-none">
+            <i class="fas fa-arrow-up text-lg"></i>
+        </button>
     </div>
 
     <!-- SISI KANAN: OUTPUT & PREVIEW -->
@@ -1094,7 +1104,28 @@
         alert(successMsg);
     }
 
-    renderAcara(); renderStory(); renderRekening();
+        // FUNGSI RENDER MUSIK DARI CORE LOGIC
+    function renderMusik() {
+        const selectMusik = document.getElementById('pilihan_musik');
+        const inputUrlMusik = document.getElementById('url_musik');
+        
+        if (window.SistemLogika && window.SistemLogika.AssetMusik) {
+            // Tambahkan opsi default/custom di paling atas
+            let htmlOptions = '<option value="">-- Pilih dari daftar atau ketik link custom --</option>';
+            htmlOptions += window.SistemLogika.AssetMusik.getOptionsHTML();
+            selectMusik.innerHTML = htmlOptions;
+            
+            // Cocokkan dropdown dengan nilai yang ada di text input (jika ada yang cocok)
+            const matchedOption = Array.from(selectMusik.options).find(opt => opt.value === inputUrlMusik.value);
+            if(matchedOption) {
+                selectMusik.value = inputUrlMusik.value;
+            }
+        } else {
+            selectMusik.innerHTML = '<option value="">Gagal memuat list lagu dari Core Logic</option>';
+        }
+    }
+
+    renderAcara(); renderStory(); renderRekening(); renderMusik(); // <-- Panggil renderMusik() disini
 
     // THUMBNAIL
     let thumbTimer;
@@ -1413,6 +1444,26 @@
     }
     window.copyHasil = copyHasil;
     
+    // ==========================================
+    // LOGIKA TOMBOL GO TO TOP (PADA TAB FORM)
+    // ==========================================
+    const formPanel = document.getElementById('panel-form');
+    const btnGoTop = document.getElementById('btn-go-top');
+
+    formPanel.addEventListener('scroll', () => {
+        if (formPanel.scrollTop > 400) {
+            btnGoTop.classList.remove('scale-0', 'opacity-0');
+            btnGoTop.classList.add('scale-100', 'opacity-100');
+        } else {
+            btnGoTop.classList.remove('scale-100', 'opacity-100');
+            btnGoTop.classList.add('scale-0', 'opacity-0');
+        }
+    });
+
+    window.scrollToTopForm = function() {
+        formPanel.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     window.onload = function() { document.fonts.ready.then(() => { generateWeb(); }); };
 </script>
 
