@@ -422,10 +422,10 @@ Kec. Medan Petisah, Kota Medan</textarea>
         @keyframes spin-continuous { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         #audio-toggle.rotating svg { animation: spin-continuous 4s linear infinite; }
 
-        .naik-turun { animation: upDown 4s ease-in-out infinite alternate; will-change: transform; }
+        .naik-turun { animation: upDown 4s ease-in-out infinite alternate; }
         @keyframes upDown { 0% { transform: translateY(-6px); } 100% { transform: translateY(6px); } }
 
-        .muncul, .muncul-kiri, .muncul-kanan, .zoom { opacity: 0; will-change: transform, opacity; }
+        .muncul, .muncul-kiri, .muncul-kanan, .zoom { opacity: 0; }
         .muncul { transform: translateY(3rem) scale(0.98); transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.8s ease; }
         .muncul.active { transform: translateY(0) scale(1); opacity: 1; }
         .muncul-kiri { transform: translateX(-2rem) scale(0.98); transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.8s ease; }
@@ -580,7 +580,7 @@ Kec. Medan Petisah, Kota Medan</textarea>
                             <div class="border-[1.5px] border-white/60 rounded-xl p-4 flex flex-col items-center bg-white/40 shadow-[0_4px_15px_rgba(0,0,0,0.05)] group cursor-pointer hover:bg-white/50 transition-colors duration-300 h-full">
                                 <div class="relative flex items-center justify-center mb-3">
                                     <span class="animate-ping absolute inline-flex h-9 w-9 rounded-full bg-white/80 opacity-50 group-hover:opacity-100 transition-opacity duration-300"></span>
-                                    <div class="w-11 h-11 rounded-full border-[1.5px] border-white/80 bg-white/50 flex items-center justify-center backdrop-blur-md transition-colors duration-300 shadow-[0_4px_15px_rgba(0,0,0,0.05)] z-10 text-biru-teks">
+                                    <div class="w-11 h-11 rounded-full border-[1.5px] border-white/80 bg-white/80 flex items-center justify-center transition-colors duration-300 shadow-[0_4px_15px_rgba(0,0,0,0.05)] z-10 text-biru-teks">
                                         <i class="far fa-calendar-alt text-[18px] group-hover:scale-110 transition-transform duration-300"></i>
                                     </div>
                                 </div>
@@ -592,7 +592,7 @@ Kec. Medan Petisah, Kota Medan</textarea>
                             <div class="border-[1.5px] border-white/60 rounded-xl p-4 flex flex-col items-center bg-white/40 shadow-[0_4px_15px_rgba(0,0,0,0.05)] group cursor-pointer hover:bg-white/50 transition-colors duration-300 h-full">
                                 <div class="relative flex items-center justify-center mb-3">
                                     <span class="animate-ping absolute inline-flex h-9 w-9 rounded-full bg-white/80 opacity-50 group-hover:opacity-100 transition-opacity duration-300"></span>
-                                    <div class="w-11 h-11 rounded-full border-[1.5px] border-white/80 bg-white/50 flex items-center justify-center backdrop-blur-md transition-colors duration-300 shadow-[0_4px_15px_rgba(0,0,0,0.05)] z-10 text-biru-teks">
+                                    <div class="w-11 h-11 rounded-full border-[1.5px] border-white/80 bg-white/80 flex items-center justify-center transition-colors duration-300 shadow-[0_4px_15px_rgba(0,0,0,0.05)] z-10 text-biru-teks">
                                         <i class="far fa-clock text-[18px] group-hover:scale-110 transition-transform duration-300"></i>
                                     </div>
                                 </div>
@@ -657,7 +657,7 @@ Kec. Medan Petisah, Kota Medan</textarea>
                                 <!-- Tengah (Icon) -->
                                 <div class="relative flex items-center justify-center mx-3">
                                     <span class="animate-ping absolute inline-flex h-6 w-6 rounded-full bg-white/80 opacity-50 group-hover:opacity-100 transition-opacity duration-300"></span>
-                                    <div class="w-8 h-8 rounded-full border-[1.5px] border-white/80 bg-white/40 flex items-center justify-center backdrop-blur-md group-hover:bg-white/60 transition-colors duration-300 shadow-sm z-10">
+                                    <div class="w-8 h-8 rounded-full border-[1.5px] border-white/80 bg-white/80 flex items-center justify-center group-hover:bg-white/90 transition-colors duration-300 shadow-sm z-10">
                                         <i class="fas fa-map-marker-alt text-biru-teks text-[12px] group-hover:scale-110 transition-transform duration-300"></i>
                                     </div>
                                 </div>
@@ -742,7 +742,7 @@ Kec. Medan Petisah, Kota Medan</textarea>
                             <!-- Efek denyut -->
                             <span class="animate-ping absolute inline-flex h-9 w-9 rounded-full bg-white/80 opacity-50 group-hover:opacity-100 transition-opacity duration-300"></span>
                             <!-- Ikon Kado -->
-                            <div class="w-10 h-10 rounded-full border-[1.5px] border-white/80 bg-white/40 flex items-center justify-center backdrop-blur-md group-hover:bg-white/70 transition-colors duration-300 shadow-[0_4px_15px_rgba(0,0,0,0.05)] z-10">
+                            <div class="w-10 h-10 rounded-full border-[1.5px] border-white/80 bg-white/80 flex items-center justify-center group-hover:bg-white/90 transition-colors duration-300 shadow-[0_4px_15px_rgba(0,0,0,0.05)] z-10">
                                 <i class="fas fa-gift text-biru-teks text-[15px] group-hover:scale-110 transition-transform duration-300"></i>
                             </div>
                         </div>
@@ -791,7 +791,7 @@ Kec. Medan Petisah, Kota Medan</textarea>
                         <div class="flex flex-col items-center justify-center mb-6 relative z-10 zoom group cursor-pointer">
                             <div class="relative flex items-center justify-center mb-3">
                                 <span class="animate-ping absolute inline-flex h-10 w-10 rounded-full bg-white/80 opacity-50 group-hover:opacity-100 transition-opacity duration-300"></span>
-                                <div class="w-12 h-12 rounded-full border-[1.5px] border-white/80 bg-white/50 flex items-center justify-center backdrop-blur-md transition-colors duration-300 shadow-[0_4px_15px_rgba(0,0,0,0.05)] z-10">
+                                <div class="w-12 h-12 rounded-full border-[1.5px] border-white/80 bg-white/80 flex items-center justify-center transition-colors duration-300 shadow-[0_4px_15px_rgba(0,0,0,0.05)] z-10">
                                     <i class="far fa-envelope-open text-[18px] text-biru-teks group-hover:scale-110 transition-transform duration-300"></i>
                                 </div>
                             </div>
@@ -878,7 +878,7 @@ Kec. Medan Petisah, Kota Medan</textarea>
                         <!-- Tengah (Icon) -->
                         <div class="relative flex items-center justify-center mx-4">
                             <span class="animate-ping absolute inline-flex h-9 w-9 rounded-full bg-white/80 opacity-50 group-hover:opacity-100 transition-opacity duration-300"></span>
-                            <div class="w-10 h-10 rounded-full border-[1.5px] border-white/80 bg-white/40 flex items-center justify-center backdrop-blur-md group-hover:bg-white/70 transition-colors duration-300 shadow-[0_4px_15px_rgba(0,0,0,0.05)] z-10">
+                            <div class="w-10 h-10 rounded-full border-[1.5px] border-white/80 bg-white/80 flex items-center justify-center group-hover:bg-white/90 transition-colors duration-300 shadow-[0_4px_15px_rgba(0,0,0,0.05)] z-10">
                                 <i class="fas fa-praying-hands text-biru-teks text-[15px] group-hover:scale-110 transition-transform duration-300"></i>
                             </div>
                         </div>
@@ -954,14 +954,21 @@ Kec. Medan Petisah, Kota Medan</textarea>
             });
         })();
 
-        // Matikan Scroll Native untuk animasi Mulus
-        (function killNativeSmooth(){ const style = document.createElement('style'); style.id = 'gsap-smooth-killer'; style.textContent = 'html{scroll-behavior:auto !important;}'; document.head.appendChild(style); })();
+        // Matikan Scroll Native untuk animasi Mulus (Hanya di Desktop)
+        if (window.innerWidth >= 768) {
+            (function killNativeSmooth(){ const style = document.createElement('style'); style.id = 'gsap-smooth-killer'; style.textContent = 'html{scroll-behavior:auto !important;}'; document.head.appendChild(style); })();
+        }
         if (typeof gsap !== 'undefined' && typeof ScrollToPlugin !== 'undefined') { gsap.registerPlugin(ScrollToPlugin); }
 
         // Script Khusus Spesifik Tema (Lenis & Lightbox)
         document.addEventListener('DOMContentLoaded', () => {
-            const lenis = new Lenis({ duration: 1.5, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), direction: 'vertical', gestureDirection: 'vertical', smooth: true, smoothWheel: true, wheelMultiplier: 1, smoothTouch: false, touchMultiplier: 2 });
-            gsap.ticker.add((time) => { lenis.raf(time * 1000); }); gsap.ticker.lagSmoothing(0);
+            let lenis;
+            
+            // Eksekusi Smooth Scroll (Lenis) HANYA jika dibuka di layar Laptop/Tablet besar
+            if (window.innerWidth >= 768) {
+                lenis = new Lenis({ duration: 1.5, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), direction: 'vertical', gestureDirection: 'vertical', smooth: true, smoothWheel: true, wheelMultiplier: 1, smoothTouch: false, touchMultiplier: 2 });
+                gsap.ticker.add((time) => { lenis.raf(time * 1000); }); gsap.ticker.lagSmoothing(0);
+            }
 
             // Lightbox Galeri
             const lightbox = document.createElement('div'); lightbox.id = 'gallery-lightbox'; lightbox.className = 'fixed inset-0 z-[99999] bg-black/95 hidden flex-col items-center justify-center opacity-0 transition-opacity duration-300 backdrop-blur-md';
