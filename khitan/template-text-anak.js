@@ -10,7 +10,7 @@ window.dataTemplateWAAnak = {
 Dengan memohon rahmat dan ridho Allah Subhanahu Wa Ta'ala, kami mengundang Bapak/Ibu/Saudara/i untuk hadir dalam acara Tasyakuran Khitan anak kami:
 
 ===============
-👦 *[nama_anak]* 👦
+✨ *[nama_anak]* ✨
 ===============
 
 Untuk informasi detail acara, Bapak/Ibu/Saudara/i dapat mengakses undangan digital kami pada link berikut: 👇👇👇
@@ -34,7 +34,7 @@ Keluarga Bpk. [nama_orang_tua]`,
 Alhamdulillah, telah lahir buah hati kami tercinta. Dengan memohon rahmat dan ridho Allah Subhanahu Wa Ta'ala, kami mengundang Bapak/Ibu/Saudara/i untuk hadir dalam acara Tasyakuran Aqiqah anak kami:
 
 ===============
-👶 *[nama_anak]* 👶
+✨ *[nama_anak]* ✨
 ===============
 
 Untuk informasi detail acara, Bapak/Ibu/Saudara/i dapat mengakses undangan digital kami pada link berikut: 👇👇👇
@@ -77,11 +77,12 @@ Keluarga Bpk. [nama_orang_tua]`,
 
 https://undangandari.com/custom-nama-tamu/?link=https://web.undangandari.com/[link slug]
 
-[2] Kakak tuliskan semua nama tamu di kolom Nama Tamu
-[3] Kakak tulis nama Anak di kolom Nama Mempelai/Anak
-[4] Kakak pilih opsi tema pengantar WA untuk mengundang pakai kata pengantar khusus (Khitan/Aqiqah/Umum)
-[5] Kakak klik tombol "Generate Nama Tamu"
-[6] Kakak klik tombol share "Whatsapp" atau bisa juga salin text
+[2] Kakak tuliskan semua nama tamu di kolom 1: Nama Tamu Undangan
+[3] Kakak tulis nama Anak di kolom 2: Nama Anak
+[4] Kakak tulis nama Orangtua di kolom 3: Nama Orang tua
+[5] Kakak pilih opsi acara "Khitanan" untu mengundang pakai kata pengantar khusus Khitanan
+[6] Kakak klik tombol "Generate Nama Tamu"
+[7] Kakak klik tombol share "Whatsapp" atau bisa juga salin text
 
 _note: untuk penulisan nama tamu tidak wajib, tapi opsional ya kak_`,
 
