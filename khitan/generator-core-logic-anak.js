@@ -312,7 +312,7 @@ window.SistemLogikaAnak = {
     AssetMusik: {
         list: [
             { judul: "Maher Zain - Ya Nabi Salam Alayka", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Islami%20-%20Maher%20Zain%20-%20Ya%20Nabi%20Salam%20Alayka%20(Reff%20-%20Ya%20Habibi).mp3" },
-            { judul: "Maher Zain - Rahmatun Lil’Alameen", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Islami%20-%20Maher%20Zain%20-%20Rahmatun%20Lil%E2%80%99Alameen%20(Full).mp3" },
+            { judul: "Maher Zain - Rahmatun Lilâ€™Alameen", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Islami%20-%20Maher%20Zain%20-%20Rahmatun%20Lil%E2%80%99Alameen%20(Full).mp3" },
             { judul: "Maher Zain - Nas Teshbehlena", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Islami%20-%20Maher%20Zain%20-%20Nas%20Teshbehlena%20(Full).mp3" },
             { judul: "Maher Zain - Salla Alayka Rahman", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Islami%20-%20Maher%20Zain%20-Salla%20Alayka%20Rahman%20(Full).mp3" },
             { judul: "Muhammad Youssef - Al Hijratu", url: "https://github.com/asetundangan/lagu/raw/refs/heads/main/Islami%20-%20Muhammad%20Youssef%20-%20Al%20Hijratu%20(Full).mp3" }
