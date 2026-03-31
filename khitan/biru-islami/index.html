@@ -401,17 +401,14 @@ Kec. Medan Petisah, Kota Medan</textarea>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <script src="https://cdn.tailwindcss.com"></script>
+    &lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;
     
     <!-- Script Animasi & Fungsionalitas -->
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
-    
-    <!-- Lenis Smooth Scrolling -->
-    <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+    &lt;script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"&gt;&lt;/script&gt;
+    &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"&gt;&lt;/script&gt;
+    &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"&gt;&lt;/script&gt;
 
-    <script>
+    &lt;script&gt;
         tailwind.config = {
             theme: {
                 extend: {
@@ -444,9 +441,10 @@ Kec. Medan Petisah, Kota Medan</textarea>
                 }
             }
         }
-    </script>
+    &lt;/script&gt;
 
     <style>
+        /* Optimasi Scroll bawaan */
         html { scroll-behavior: auto !important; }
         body { 
             background-color: #062352; 
@@ -463,25 +461,31 @@ Kec. Medan Petisah, Kota Medan</textarea>
         
         .mobile-container { width: 100%; max-width: 420px; background-color: transparent; position: relative; box-shadow: 0 0 30px rgba(0,0,0,0.8); overflow-x: hidden; }
 
+        /* Optimasi Background Layers (Menggunakan hardware acceleration) */
         .fixed-bg-layer {
             position: fixed; top: 0; left: 50%; transform: translateX(-50%) translateZ(0); width: 100%; max-width: 420px; height: 100vh;
-            background-image: url('https://ik.imagekit.io/asetundangan/aset/background/background%20biru%20islami%20khita.jpg?tr=w-800,q-70,f-auto'); 
+            background-image: url('https://ik.imagekit.io/asetundangan/aset/background/background%20biru%20islami%20khita.jpg?tr=w-600,q-70,f-auto'); 
             background-size: cover; background-position: center; z-index: 0; pointer-events: none; will-change: transform; 
         }
 
         .bg-overlay {
-            position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; height: 100vh;
-            background: linear-gradient(to bottom, rgba(6,35,82,0.3) 0%, rgba(6,35,82,0.8) 100%); pointer-events: none; z-index: 0;
+            position: fixed; top: 0; left: 50%; transform: translateX(-50%) translateZ(0); width: 100%; max-width: 420px; height: 100vh;
+            background: linear-gradient(to bottom, rgba(6,35,82,0.4) 0%, rgba(6,35,82,0.85) 100%); pointer-events: none; z-index: 0; will-change: transform;
         }
 
+        /* Box Shadow Diperingan untuk Performa GPU */
         .premium-card {
-            background: linear-gradient(145deg, #a2c1e1 0%, #89aacc 100%); box-shadow: 0 10px 30px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.4);
-            border: 1px solid rgba(255,255,255,0.2); transform: translateZ(0); 
+            background: linear-gradient(145deg, #a2c1e1 0%, #89aacc 100%); 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.4);
+            border: 1px solid rgba(255,255,255,0.2); 
+            transform: translateZ(0); 
+            will-change: transform;
         }
 
         .img-placeholder { background-color: rgba(255,255,255,0.2); position: relative; }
         .lock-scroll { overflow: hidden !important; height: 100vh !important; touch-action: none; }
 
+        /* Floating Button */
         .floating-btn { position: fixed; right: 20px; width: 36px; height: 36px; background: rgba(6, 35, 82, 0.9); border: 1px solid rgba(255, 255, 255, 0.4); color: #ffffff; border-radius: 50%; cursor: pointer; z-index: 1000; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); transition: all 0.3s ease; }
         .floating-btn:hover { background: rgba(17, 43, 82, 1); border-color: rgba(255, 255, 255, 0.8); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); transform: translateY(-2px); color: #ffffff; }
         .floating-btn:active { transform: scale(0.95); }
@@ -492,21 +496,33 @@ Kec. Medan Petisah, Kota Medan</textarea>
         @keyframes spin-continuous { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         #audio-toggle.rotating svg { animation: spin-continuous 4s linear infinite; }
 
-        .naik-turun { animation: upDown 4s ease-in-out infinite alternate; }
-        @keyframes upDown { 0% { transform: translateY(-6px); } 100% { transform: translateY(6px); } }
+        /* Animasi Lampion Dioptimalkan (translateZ(0) untuk GPU layer tersendiri) */
+        .naik-turun { animation: upDown 6s ease-in-out infinite alternate; will-change: transform; transform: translateZ(0); }
+        @keyframes upDown { 0% { transform: translateY(-4px) translateZ(0); } 100% { transform: translateY(4px) translateZ(0); } }
 
-        .muncul, .muncul-kiri, .muncul-kanan, .zoom { opacity: 0; }
-        .muncul { transform: translateY(3rem) scale(0.98); transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.8s ease; }
+        /* ANIMASI SCROLL DENGAN WILL-CHANGE (KUNCI AGAR MULUS) */
+        .muncul, .muncul-kiri, .muncul-kanan, .zoom { will-change: transform, opacity; }
+        .muncul { transform: translateY(3rem) scale(0.95); opacity: 0; transition: transform 1s ease, opacity 0.8s ease; }
         .muncul.active { transform: translateY(0) scale(1); opacity: 1; }
-        .muncul-kiri { transform: translateX(-2rem) scale(0.98); transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.8s ease; }
+        .muncul-kiri { transform: translateX(-2rem) scale(0.95); opacity: 0; transition: transform 1s ease, opacity 0.8s ease; }
         .muncul-kiri.active { transform: translateX(0) scale(1); opacity: 1; }
-        .muncul-kanan { transform: translateX(2rem) scale(0.98); transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.8s ease; }
+        .muncul-kanan { transform: translateX(2rem) scale(0.95); opacity: 0; transition: transform 1s ease, opacity 0.8s ease; }
         .muncul-kanan.active { transform: translateX(0) scale(1); opacity: 1; }
-        .zoom { transform: scale(0.85); transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.8s ease; }
+        .zoom { transform: scale(0.85); opacity: 0; transition: transform 1.2s ease, opacity 0.8s ease; }
         .zoom.active { transform: scale(1); opacity: 1; }
         @media (prefers-reduced-motion: reduce){ .muncul, .muncul-kiri, .muncul-kanan, .zoom { transition: none !important; } }
 
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; }
+        /* Animasi Kilap Foto */
+        .animasi-shine { animation: shine 4s ease-in-out infinite; will-change: transform, opacity; }
+        @keyframes shine { 0% { transform: translateX(-100%); opacity: 0; } 10% { opacity: 1; } 20% { transform: translateX(200%); opacity: 0; } 100% { transform: translateX(200%); opacity: 0; } }
+
+        /* Animasi Bintang Kecil (Ganti pulse menjadi opacity saja agar hemat GPU) */
+        .animasi-kelip { animation: kelip 2s ease-in-out infinite alternate; will-change: opacity; }
+        .animasi-kelip-delay { animation: kelip 2.5s ease-in-out infinite alternate; animation-delay: 0.5s; will-change: opacity; }
+        @keyframes kelip { 0% { opacity: 0.3; } 100% { opacity: 1; } }
+
+        /* Modal Style */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; backdrop-filter: blur(4px); }
         .modal-box { background: #062352; border: 1px solid #d4af37; border-radius: 12px; padding: 24px; width: 90%; max-width: 320px; transform: scale(0.9); transition: transform 0.3s ease; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
         .modal-overlay.active { display: flex; opacity: 1; }
         .modal-overlay.active .modal-box { transform: scale(1); }
@@ -540,18 +556,18 @@ Kec. Medan Petisah, Kota Medan</textarea>
 
     <div class="mobile-container">
         <!-- COVER -->
-        <section id="cover" class="relative w-full min-h-screen flex flex-col items-center justify-center p-5 z-20 py-16 shrink-0">
-            <img src="https://ik.imagekit.io/asetundangan/aset/khitan/lampion%20muslim.png?tr=w-400,q-80,f-auto" alt="Lampion" class="absolute top-0 left-0 w-full z-0 naik-turun pointer-events-none opacity-90" decoding="async">
+        <section id="cover" class="relative w-full min-h-[100dvh] flex flex-col items-center justify-center p-5 z-20 py-16 shrink-0">
+            <img src="https://ik.imagekit.io/asetundangan/aset/khitan/lampion%20muslim.png?tr=w-750,q-95,f-auto" alt="Lampion" class="absolute top-0 left-0 w-full z-0 naik-turun pointer-events-none opacity-95" decoding="async">
             <div class="w-full max-w-[340px] premium-card rounded-[2rem] p-8 flex flex-col items-center relative z-10 mt-8">
                 <div class="absolute inset-[8px] border-[1px] border-white/40 rounded-[1.6rem] pointer-events-none z-0"></div>
 
                 <div class="relative w-[150px] mb-8 -mt-20 z-10 flex flex-col items-center zoom active group cursor-pointer">
-                    <svg class="absolute -top-3 -left-3 w-8 h-8 text-emas-muda z-30 animate-pulse drop-shadow-md" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" /></svg>
-                    <svg class="absolute -bottom-3 -right-3 w-6 h-6 text-emas-muda z-30 animate-pulse drop-shadow-md delay-150" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" /></svg>
-                    <div class="relative w-full h-[190px] bg-gradient-to-b from-emas-muda via-emas to-emas-tua border-[1px] border-emas/50 rounded-t-[6rem] rounded-b-[4px] p-[4px] shadow-[0_15px_35px_rgba(0,0,0,0.25)] transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-[0_25px_45px_rgba(0,0,0,0.3)] ring-1 ring-white/30 ring-offset-2 ring-offset-[#89aacc]">
+                    <svg class="absolute -top-3 -left-3 w-8 h-8 text-emas-muda z-30 animasi-kelip" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" /></svg>
+                    <svg class="absolute -bottom-3 -right-3 w-6 h-6 text-emas-muda z-30 animasi-kelip-delay" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" /></svg>
+                    <div class="relative w-full h-[190px] bg-gradient-to-b from-emas-muda via-emas to-emas-tua border-[1px] border-emas/50 rounded-t-[6rem] rounded-b-[4px] p-[4px] shadow-md ring-1 ring-white/30 ring-offset-2 ring-offset-[#89aacc]">
                         <div class="relative w-full h-full rounded-t-[5.8rem] rounded-b-[2px] overflow-hidden bg-white img-placeholder">
-                            <img src="{{FOTO_COVER}}" alt="Foto Khitan" class="w-full h-full object-cover rounded-t-[5.8rem] rounded-b-[2px] transform transition duration-700 group-hover:scale-105" decoding="async">
-                            <div class="absolute top-0 -left-[100%] w-1/2 h-full bg-gradient-to-r from-transparent via-white/70 to-transparent skew-x-[-25deg] animate-shine z-20 pointer-events-none"></div>
+                            <img src="{{FOTO_COVER}}" alt="Foto Khitan" class="w-full h-full object-cover rounded-t-[5.8rem] rounded-b-[2px]" decoding="async">
+                            <div class="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/70 to-transparent skew-x-[-25deg] animasi-shine z-20 pointer-events-none"></div>
                         </div>
                     </div>
                 </div>
@@ -562,7 +578,7 @@ Kec. Medan Petisah, Kota Medan</textarea>
                     <div class="w-1.5 h-1.5 bg-emas transform rotate-45 opacity-80"></div>
                 </div>
                 
-                <h1 class="font-cinzel font-bold text-biru-teks text-[3.8rem] tracking-[0.05em] uppercase leading-none mt-2 mb-1 drop-shadow-sm z-10 zoom active w-full text-center">KHITAN</h1>
+                <h1 class="font-cinzel font-bold text-biru-teks text-[3.8rem] tracking-[0.05em] uppercase leading-none mt-2 mb-1 z-10 zoom active w-full text-center" style="text-shadow: 0 1px 2px rgba(0,0,0,0.1);">KHITAN</h1>
                 <h2 class="font-playfair italic font-normal text-biru-teks text-[2.8rem] tracking-wide text-center mb-3 z-10 muncul active">{{NAMA_PANGGILAN}}</h2>
 
                 <div class="flex items-center justify-center gap-4 w-[85%] mb-5 z-10 zoom active">
@@ -575,17 +591,17 @@ Kec. Medan Petisah, Kota Medan</textarea>
 
                 <div class="w-full bg-white/30 border border-white/50 rounded-2xl py-5 px-4 flex flex-col items-center z-10 shadow-sm relative overflow-hidden">
                     <p class="font-montserrat text-biru-teks/80 text-[8.5px] font-medium tracking-wide mb-1.5 text-center muncul active" style="transition-delay: 0.1s">Kepada Yth. Bpk/Ibu/Saudara/i</p>
-                    <h4 class="font-playfair font-bold text-biru-teks text-[16px] tracking-wider text-center mb-6 drop-shadow-sm namatamu zoom active" style="transition-delay: 0.2s">Tamu Undangan</h4>
+                    <h4 class="font-playfair font-bold text-biru-teks text-[16px] tracking-wider text-center mb-6 namatamu zoom active" style="transition-delay: 0.2s">Tamu Undangan</h4>
                     
-                    <button id="tombol-buka-undangan" class="w-[85%] bg-biru-teks border-[1.5px] border-biru-teks text-white hover:bg-transparent hover:text-biru-teks font-montserrat font-bold text-[9px] tracking-[0.25em] py-3.5 rounded-full transition-colors duration-300 flex items-center justify-center gap-3 group mb-4 outline-none muncul active" style="transition-delay: 0.3s">
+                    <button id="tombol-buka-undangan" class="w-[85%] bg-biru-teks border-[1.5px] border-biru-teks text-white hover:bg-transparent hover:text-biru-teks font-montserrat font-bold text-[9px] tracking-[0.25em] py-3.5 rounded-full transition-colors duration-300 flex items-center justify-center gap-3 group mb-4 outline-none muncul active cursor-pointer" style="transition-delay: 0.3s">
                         <i id="btn-icon" class="fas fa-envelope-open text-[10px] group-hover:scale-110 transition-transform"></i> <span class="elementor-button-text">BUKA UNDANGAN</span>
                     </button>
                     <p class="font-montserrat font-medium italic text-biru-teks text-[9px] text-center px-2 leading-relaxed muncul active" style="transition-delay: 0.4s">*) Mohon maaf apabila ada kesalahan penulisan nama/gelar</p>
                 </div>
             </div>
             
-            <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-150,f-auto" alt="Quran" class="absolute -bottom-2 -left-4 w-28 opacity-90 z-20 drop-shadow-lg pointer-events-none" decoding="async">
-            <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-150,f-auto" alt="Quran" class="absolute -bottom-2 -right-4 w-28 opacity-90 z-20 drop-shadow-lg transform scale-x-[-1] pointer-events-none" decoding="async">
+            <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-330,f-auto" alt="Quran" class="absolute -bottom-2 -left-4 w-28 opacity-95 z-20 pointer-events-none" decoding="async">
+            <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-330,f-auto" alt="Quran" class="absolute -bottom-2 -right-4 w-28 opacity-95 z-20 transform scale-x-[-1] pointer-events-none" decoding="async">
         </section>
 
         <!-- WRAPPER CONTENT UNDANGAN -->
@@ -593,7 +609,7 @@ Kec. Medan Petisah, Kota Medan</textarea>
 
             <!-- PROFIL -->
             <section id="section-profil" class="relative w-full flex flex-col items-center justify-center p-5 z-10 py-16">
-                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/lampion%20muslim.png?tr=w-400,q-80,f-auto" alt="Lampion" class="absolute top-0 left-0 w-full z-0 naik-turun pointer-events-none opacity-90" loading="lazy" decoding="async">
+                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/lampion%20muslim.png?tr=w-750,q-95,f-auto" alt="Lampion" class="absolute top-0 left-0 w-full z-0 naik-turun pointer-events-none opacity-95" loading="lazy" decoding="async">
                 <div class="w-full max-w-[340px] premium-card rounded-[2rem] px-8 pt-8 pb-12 flex flex-col items-center relative mt-8 mb-6">
                     <div class="absolute inset-[8px] border-[1px] border-white/40 rounded-[1.6rem] pointer-events-none z-0"></div>
 
@@ -603,12 +619,12 @@ Kec. Medan Petisah, Kota Medan</textarea>
                     </p>
 
                     <div class="relative w-[150px] mb-6 z-10 flex flex-col items-center zoom group cursor-pointer">
-                        <svg class="absolute -top-3 -left-3 w-8 h-8 text-emas-muda z-30 animate-pulse drop-shadow-md" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" /></svg>
-                        <svg class="absolute -bottom-3 -right-3 w-6 h-6 text-emas-muda z-30 animate-pulse drop-shadow-md delay-150" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" /></svg>
-                        <div class="relative w-full h-[190px] bg-gradient-to-b from-emas-muda via-emas to-emas-tua border-[1px] border-emas/50 rounded-t-[6rem] rounded-b-[4px] p-[4px] shadow-[0_15px_35px_rgba(0,0,0,0.25)] transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-[0_25px_45px_rgba(0,0,0,0.3)] ring-1 ring-white/30 ring-offset-2 ring-offset-[#89aacc]">
+                        <svg class="absolute -top-3 -left-3 w-8 h-8 text-emas-muda z-30 animasi-kelip" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" /></svg>
+                        <svg class="absolute -bottom-3 -right-3 w-6 h-6 text-emas-muda z-30 animasi-kelip-delay" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" /></svg>
+                        <div class="relative w-full h-[190px] bg-gradient-to-b from-emas-muda via-emas to-emas-tua border-[1px] border-emas/50 rounded-t-[6rem] rounded-b-[4px] p-[4px] shadow-md ring-1 ring-white/30 ring-offset-2 ring-offset-[#89aacc]">
                             <div class="relative w-full h-full rounded-t-[5.8rem] rounded-b-[2px] overflow-hidden bg-white img-placeholder">
-                                <img src="{{FOTO_PROFIL}}" alt="Foto Anak" class="w-full h-full object-cover rounded-t-[5.8rem] rounded-b-[2px] transform transition duration-700 group-hover:scale-105" loading="lazy" decoding="async">
-                                <div class="absolute top-0 -left-[100%] w-1/2 h-full bg-gradient-to-r from-transparent via-white/70 to-transparent skew-x-[-25deg] animate-shine z-20 pointer-events-none"></div>
+                                <img src="{{FOTO_PROFIL}}" alt="Foto Anak" class="w-full h-full object-cover rounded-t-[5.8rem] rounded-b-[2px]" loading="lazy" decoding="async">
+                                <div class="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/70 to-transparent skew-x-[-25deg] animasi-shine z-20 pointer-events-none"></div>
                             </div>
                         </div>
                     </div>
@@ -628,13 +644,13 @@ Kec. Medan Petisah, Kota Medan</textarea>
                         </div>
                     </div>
                 </div>
-                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-150,f-auto" alt="Quran" class="absolute -bottom-2 -left-4 w-28 opacity-90 z-20 drop-shadow-lg pointer-events-none" loading="lazy" decoding="async">
-                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-150,f-auto" alt="Quran" class="absolute -bottom-2 -right-4 w-28 opacity-90 z-20 drop-shadow-lg transform scale-x-[-1] pointer-events-none" loading="lazy" decoding="async">
+                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-330,f-auto" alt="Quran" class="absolute -bottom-2 -left-4 w-28 opacity-95 z-20 pointer-events-none" loading="lazy" decoding="async">
+                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-330,f-auto" alt="Quran" class="absolute -bottom-2 -right-4 w-28 opacity-95 z-20 transform scale-x-[-1] pointer-events-none" loading="lazy" decoding="async">
             </section>
 
             <!-- ACARA -->
             <section id="acara" class="relative w-full flex flex-col items-center justify-center p-5 z-10 py-16">
-                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/lampion%20muslim.png?tr=w-400,q-80,f-auto" alt="Lampion" class="absolute top-0 left-0 w-full z-0 naik-turun pointer-events-none opacity-90" loading="lazy" decoding="async">
+                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/lampion%20muslim.png?tr=w-750,q-95,f-auto" alt="Lampion" class="absolute top-0 left-0 w-full z-0 naik-turun pointer-events-none opacity-95" loading="lazy" decoding="async">
                 <div class="w-full max-w-[340px] premium-card rounded-[2rem] px-8 pt-8 pb-12 flex flex-col items-center relative mt-8 mb-6">
                     <div class="absolute inset-[8px] border-[1px] border-white/40 rounded-[1.6rem] pointer-events-none z-0"></div>
 
@@ -647,11 +663,10 @@ Kec. Medan Petisah, Kota Medan</textarea>
 
                     <div class="grid grid-cols-2 gap-3 w-full mb-8">
                         <div class="muncul-kiri w-full h-full">
-                            <div class="border-[1.5px] border-white/60 rounded-xl p-4 flex flex-col items-center bg-white/40 shadow-[0_4px_15px_rgba(0,0,0,0.05)] group cursor-pointer hover:bg-white/50 transition-colors duration-300 h-full">
+                            <div class="border-[1.5px] border-white/60 rounded-xl p-4 flex flex-col items-center bg-white/40 shadow-sm group h-full">
                                 <div class="relative flex items-center justify-center mb-3">
-                                    <span class="animate-ping absolute inline-flex h-9 w-9 rounded-full bg-white/80 opacity-50 group-hover:opacity-100 transition-opacity duration-300"></span>
-                                    <div class="w-11 h-11 rounded-full border-[1.5px] border-white/80 bg-white/80 flex items-center justify-center transition-colors duration-300 shadow-[0_4px_15px_rgba(0,0,0,0.05)] z-10 text-biru-teks">
-                                        <i class="far fa-calendar-alt text-[18px] group-hover:scale-110 transition-transform duration-300"></i>
+                                    <div class="w-11 h-11 rounded-full border-[1.5px] border-white/80 bg-white/80 flex items-center justify-center shadow-sm z-10 text-biru-teks">
+                                        <i class="far fa-calendar-alt text-[18px]"></i>
                                     </div>
                                 </div>
                                 <h4 class="font-montserrat font-bold text-biru-teks text-[15px] tracking-wide mb-1">Hari</h4>
@@ -659,11 +674,10 @@ Kec. Medan Petisah, Kota Medan</textarea>
                             </div>
                         </div>
                         <div class="muncul-kanan w-full h-full">
-                            <div class="border-[1.5px] border-white/60 rounded-xl p-4 flex flex-col items-center bg-white/40 shadow-[0_4px_15px_rgba(0,0,0,0.05)] group cursor-pointer hover:bg-white/50 transition-colors duration-300 h-full">
+                            <div class="border-[1.5px] border-white/60 rounded-xl p-4 flex flex-col items-center bg-white/40 shadow-sm group h-full">
                                 <div class="relative flex items-center justify-center mb-3">
-                                    <span class="animate-ping absolute inline-flex h-9 w-9 rounded-full bg-white/80 opacity-50 group-hover:opacity-100 transition-opacity duration-300"></span>
-                                    <div class="w-11 h-11 rounded-full border-[1.5px] border-white/80 bg-white/80 flex items-center justify-center transition-colors duration-300 shadow-[0_4px_15px_rgba(0,0,0,0.05)] z-10 text-biru-teks">
-                                        <i class="far fa-clock text-[18px] group-hover:scale-110 transition-transform duration-300"></i>
+                                    <div class="w-11 h-11 rounded-full border-[1.5px] border-white/80 bg-white/80 flex items-center justify-center shadow-sm z-10 text-biru-teks">
+                                        <i class="far fa-clock text-[18px]"></i>
                                     </div>
                                 </div>
                                 <h4 class="font-montserrat font-bold text-biru-teks text-[15px] tracking-wide mb-1">Pukul</h4>
@@ -679,24 +693,24 @@ Kec. Medan Petisah, Kota Medan</textarea>
                     </div>
 
                     <div class="grid grid-cols-4 gap-2 w-full mb-6">
-                        <div class="bg-biru-teks rounded-lg py-3 flex flex-col items-center shadow-sm border border-emas/40 relative overflow-hidden zoom"><div class="absolute inset-0 bg-white/5 pointer-events-none"></div><span id="cd-hari" class="font-cinzel font-bold text-[20px] text-white leading-none mb-1.5 drop-shadow-sm">00</span><span class="font-montserrat font-semibold text-[8px] text-emas-muda tracking-widest uppercase">Hari</span></div>
-                        <div class="bg-biru-teks rounded-lg py-3 flex flex-col items-center shadow-sm border border-emas/40 relative overflow-hidden zoom"><div class="absolute inset-0 bg-white/5 pointer-events-none"></div><span id="cd-jam" class="font-cinzel font-bold text-[20px] text-white leading-none mb-1.5 drop-shadow-sm">00</span><span class="font-montserrat font-semibold text-[8px] text-emas-muda tracking-widest uppercase">Jam</span></div>
-                        <div class="bg-biru-teks rounded-lg py-3 flex flex-col items-center shadow-sm border border-emas/40 relative overflow-hidden zoom"><div class="absolute inset-0 bg-white/5 pointer-events-none"></div><span id="cd-menit" class="font-cinzel font-bold text-[20px] text-white leading-none mb-1.5 drop-shadow-sm">00</span><span class="font-montserrat font-semibold text-[8px] text-emas-muda tracking-widest uppercase">Menit</span></div>
-                        <div class="bg-biru-teks rounded-lg py-3 flex flex-col items-center shadow-sm border border-emas/40 relative overflow-hidden zoom"><div class="absolute inset-0 bg-white/5 pointer-events-none"></div><span id="cd-detik" class="font-cinzel font-bold text-[20px] text-white leading-none mb-1.5 drop-shadow-sm">00</span><span class="font-montserrat font-semibold text-[8px] text-emas-muda tracking-widest uppercase">Detik</span></div>
+                        <div class="bg-biru-teks rounded-lg py-3 flex flex-col items-center shadow-sm border border-emas/40 zoom"><span id="cd-hari" class="font-cinzel font-bold text-[20px] text-white leading-none mb-1.5">00</span><span class="font-montserrat font-semibold text-[8px] text-emas-muda tracking-widest uppercase">Hari</span></div>
+                        <div class="bg-biru-teks rounded-lg py-3 flex flex-col items-center shadow-sm border border-emas/40 zoom"><span id="cd-jam" class="font-cinzel font-bold text-[20px] text-white leading-none mb-1.5">00</span><span class="font-montserrat font-semibold text-[8px] text-emas-muda tracking-widest uppercase">Jam</span></div>
+                        <div class="bg-biru-teks rounded-lg py-3 flex flex-col items-center shadow-sm border border-emas/40 zoom"><span id="cd-menit" class="font-cinzel font-bold text-[20px] text-white leading-none mb-1.5">00</span><span class="font-montserrat font-semibold text-[8px] text-emas-muda tracking-widest uppercase">Menit</span></div>
+                        <div class="bg-biru-teks rounded-lg py-3 flex flex-col items-center shadow-sm border border-emas/40 zoom"><span id="cd-detik" class="font-cinzel font-bold text-[20px] text-white leading-none mb-1.5">00</span><span class="font-montserrat font-semibold text-[8px] text-emas-muda tracking-widest uppercase">Detik</span></div>
                     </div>
 
                     <p class="font-montserrat font-medium text-biru-teks/70 text-[9.5px] leading-relaxed text-center mb-6 px-4 muncul">Klik tombol dibawah untuk menambahkan pengingat otomatis ke kalender Google.</p>
                     <div class="w-[90%] muncul">
-                        <a href="{{LINK_KALENDER}}" target="_blank" class="w-full bg-biru-teks hover:bg-[#0e2242] text-white border border-emas/40 font-montserrat font-bold text-[9.5px] tracking-[0.2em] py-3.5 rounded-md transition-colors duration-300 flex items-center justify-center gap-3 group shadow-md"><i class="far fa-calendar-alt text-[12px] group-hover:scale-110 transition-transform"></i> SIMPAN DI KALENDER</a>
+                        <a href="{{LINK_KALENDER}}" target="_blank" class="w-full bg-biru-teks hover:bg-[#0e2242] text-white border border-emas/40 font-montserrat font-bold text-[9.5px] tracking-[0.2em] py-3.5 rounded-md transition-colors duration-300 flex items-center justify-center gap-3 shadow-md"><i class="far fa-calendar-alt text-[12px]"></i> SIMPAN DI KALENDER</a>
                     </div>
                 </div>
-                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-150,f-auto" alt="Quran" class="absolute -bottom-2 -left-4 w-28 opacity-90 z-20 drop-shadow-lg pointer-events-none" loading="lazy" decoding="async">
-                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-150,f-auto" alt="Quran" class="absolute -bottom-2 -right-4 w-28 opacity-90 z-20 drop-shadow-lg transform scale-x-[-1] pointer-events-none" loading="lazy" decoding="async">
+                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-330,f-auto" alt="Quran" class="absolute -bottom-2 -left-4 w-28 opacity-95 z-20 pointer-events-none" loading="lazy" decoding="async">
+                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-330,f-auto" alt="Quran" class="absolute -bottom-2 -right-4 w-28 opacity-95 z-20 transform scale-x-[-1] pointer-events-none" loading="lazy" decoding="async">
             </section>
 
             <!-- LOKASI -->
             <section id="lokasi" class="relative w-full flex flex-col items-center justify-center p-5 z-10 py-16">
-                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/lampion%20muslim.png?tr=w-400,q-80,f-auto" alt="Lampion" class="absolute top-0 left-0 w-full z-0 naik-turun pointer-events-none opacity-90" loading="lazy" decoding="async">
+                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/lampion%20muslim.png?tr=w-750,q-95,f-auto" alt="Lampion" class="absolute top-0 left-0 w-full z-0 naik-turun pointer-events-none opacity-95" loading="lazy" decoding="async">
                 <div class="w-full max-w-[340px] premium-card rounded-[2rem] px-8 pt-8 pb-12 flex flex-col items-center relative mt-8 mb-6">
                     <div class="absolute inset-[8px] border-[1px] border-white/40 rounded-[1.6rem] pointer-events-none z-0"></div>
 
@@ -712,31 +726,13 @@ Kec. Medan Petisah, Kota Medan</textarea>
                         <span class="font-montserrat text-white/50 text-[18px] font-light leading-none">+</span>
                     </div>
 
-                    <div class="relative group mx-auto w-full max-w-[280px] p-[2px] rounded-2xl bg-gradient-to-r from-transparent via-biru-teks/20 to-transparent hover:from-biru-teks/40 hover:via-biru-teks/40 hover:to-biru-teks/40 transition-all duration-500 overflow-hidden muncul shadow-sm hover:shadow-lg hover:-translate-y-0.5 mb-8">
+                    <div class="relative mx-auto w-full max-w-[280px] p-[2px] rounded-2xl bg-gradient-to-r from-transparent via-biru-teks/20 to-transparent muncul shadow-sm mb-8">
                         <div class="bg-white/30 rounded-[14px] p-4 pt-5">
-                            
-                            <!-- Ornamen Interaktif (Gaya Cluster) -->
-                            <div class="flex items-center justify-center w-full mb-4 cursor-pointer group">
-                                <!-- Ornamen Kiri -->
-                                <div class="flex items-center gap-1 opacity-50 group-hover:opacity-80 transition-all duration-500 group-hover:-translate-x-1">
-                                    <div class="w-0.5 h-0.5 rounded-full bg-biru-teks"></div>
-                                    <div class="w-1 h-1 bg-biru-teks transform rotate-45"></div>
-                                    <div class="w-1.5 h-1.5 bg-biru-teks transform rotate-45"></div>
-                                </div>
-                                
-                                <!-- Tengah (Icon) -->
+                            <div class="flex items-center justify-center w-full mb-4">
                                 <div class="relative flex items-center justify-center mx-3">
-                                    <span class="animate-ping absolute inline-flex h-6 w-6 rounded-full bg-white/80 opacity-50 group-hover:opacity-100 transition-opacity duration-300"></span>
-                                    <div class="w-8 h-8 rounded-full border-[1.5px] border-white/80 bg-white/80 flex items-center justify-center group-hover:bg-white/90 transition-colors duration-300 shadow-sm z-10">
-                                        <i class="fas fa-map-marker-alt text-biru-teks text-[12px] group-hover:scale-110 transition-transform duration-300"></i>
+                                    <div class="w-8 h-8 rounded-full border-[1.5px] border-white/80 bg-white/80 flex items-center justify-center shadow-sm z-10">
+                                        <i class="fas fa-map-marker-alt text-biru-teks text-[12px]"></i>
                                     </div>
-                                </div>
-                                
-                                <!-- Ornamen Kanan -->
-                                <div class="flex items-center gap-1 opacity-50 group-hover:opacity-80 transition-all duration-500 group-hover:translate-x-1">
-                                    <div class="w-1.5 h-1.5 bg-biru-teks transform rotate-45"></div>
-                                    <div class="w-1 h-1 bg-biru-teks transform rotate-45"></div>
-                                    <div class="w-0.5 h-0.5 rounded-full bg-biru-teks"></div>
                                 </div>
                             </div>
 
@@ -754,16 +750,16 @@ Kec. Medan Petisah, Kota Medan</textarea>
                     </div>
 
                     <div class="w-[90%] muncul">
-                        <a href="{{MAPS_LINK}}" target="_blank" class="w-full bg-biru-teks hover:bg-[#0e2242] text-white border border-emas/40 font-montserrat font-bold text-[9.5px] tracking-[0.2em] py-3.5 rounded-md transition-colors duration-300 flex items-center justify-center gap-3 group shadow-md"><i class="fas fa-map-marker-alt text-[12px] group-hover:animate-bounce"></i> LIHAT GOOGLE MAPS</a>
+                        <a href="{{MAPS_LINK}}" target="_blank" class="w-full bg-biru-teks hover:bg-[#0e2242] text-white border border-emas/40 font-montserrat font-bold text-[9.5px] tracking-[0.2em] py-3.5 rounded-md transition-colors duration-300 flex items-center justify-center gap-3 shadow-md"><i class="fas fa-map-marker-alt text-[12px]"></i> LIHAT GOOGLE MAPS</a>
                     </div>
                 </div>
-                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-150,f-auto" alt="Quran" class="absolute -bottom-2 -left-4 w-28 opacity-90 z-20 drop-shadow-lg pointer-events-none" loading="lazy" decoding="async">
-                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-150,f-auto" alt="Quran" class="absolute -bottom-2 -right-4 w-28 opacity-90 z-20 drop-shadow-lg transform scale-x-[-1] pointer-events-none" loading="lazy" decoding="async">
+                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-330,f-auto" alt="Quran" class="absolute -bottom-2 -left-4 w-28 opacity-95 z-20 pointer-events-none" loading="lazy" decoding="async">
+                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-330,f-auto" alt="Quran" class="absolute -bottom-2 -right-4 w-28 opacity-95 z-20 transform scale-x-[-1] pointer-events-none" loading="lazy" decoding="async">
             </section>
 
             <!-- GALERI -->
             <section id="galeri" class="{{SECTION_GALERI_CLASS}} relative w-full flex-col items-center justify-center p-5 z-10 py-16">
-                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/lampion%20muslim.png?tr=w-400,q-80,f-auto" alt="Lampion" class="absolute top-0 left-0 w-full z-0 naik-turun pointer-events-none opacity-90" loading="lazy" decoding="async">
+                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/lampion%20muslim.png?tr=w-750,q-95,f-auto" alt="Lampion" class="absolute top-0 left-0 w-full z-0 naik-turun pointer-events-none opacity-95" loading="lazy" decoding="async">
                 <div class="w-full max-w-[340px] premium-card rounded-[2rem] px-8 pt-8 pb-12 flex flex-col items-center relative mt-8 mb-6">
                     <div class="absolute inset-[8px] border-[1px] border-white/40 rounded-[1.6rem] pointer-events-none z-0"></div>
 
@@ -782,13 +778,13 @@ Kec. Medan Petisah, Kota Medan</textarea>
                         {{SECTION_GALERI}}
                     </div>
                 </div>
-                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-150,f-auto" alt="Quran" class="absolute -bottom-2 -left-4 w-28 opacity-90 z-20 drop-shadow-lg pointer-events-none" loading="lazy" decoding="async">
-                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-150,f-auto" alt="Quran" class="absolute -bottom-2 -right-4 w-28 opacity-90 z-20 drop-shadow-lg transform scale-x-[-1] pointer-events-none" loading="lazy" decoding="async">
+                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-330,f-auto" alt="Quran" class="absolute -bottom-2 -left-4 w-28 opacity-95 z-20 pointer-events-none" loading="lazy" decoding="async">
+                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-330,f-auto" alt="Quran" class="absolute -bottom-2 -right-4 w-28 opacity-95 z-20 transform scale-x-[-1] pointer-events-none" loading="lazy" decoding="async">
             </section>
 
             <!-- GIFT -->
             <section id="gift" class="{{SECTION_GIFT_CLASS}} relative w-full flex-col items-center justify-center p-5 z-10 py-16">
-                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/lampion%20muslim.png?tr=w-400,q-80,f-auto" alt="Lampion" class="absolute top-0 left-0 w-full z-0 naik-turun pointer-events-none opacity-90" loading="lazy" decoding="async">
+                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/lampion%20muslim.png?tr=w-750,q-95,f-auto" alt="Lampion" class="absolute top-0 left-0 w-full z-0 naik-turun pointer-events-none opacity-95" loading="lazy" decoding="async">
                 <div class="w-full max-w-[340px] premium-card rounded-[2rem] px-8 pt-8 pb-12 flex flex-col items-center relative mt-8 mb-6">
                     <div class="absolute inset-[8px] border-[1px] border-white/40 rounded-[1.6rem] pointer-events-none z-0"></div>
 
@@ -798,30 +794,11 @@ Kec. Medan Petisah, Kota Medan</textarea>
                         <div class="h-[1px] bg-biru-teks/40 flex-grow"></div>
                     </div>
 
-                    <!-- Ornamen Interaktif (Gaya Cluster) -->
-                    <div class="flex items-center justify-center w-full mb-7 mt-5 zoom cursor-pointer group" style="transition-delay: 0.1s">
-                        <!-- Ornamen Kiri -->
-                        <div class="flex items-center gap-1.5 opacity-40 group-hover:opacity-80 transition-all duration-500 group-hover:-translate-x-2">
-                            <div class="w-1 h-1 rounded-full bg-biru-teks"></div>
-                            <div class="w-1.5 h-1.5 bg-biru-teks transform rotate-45"></div>
-                            <div class="w-2 h-2 bg-biru-teks transform rotate-45"></div>
-                        </div>
-                        
-                        <!-- Tengah (Kado) -->
+                    <div class="flex items-center justify-center w-full mb-7 mt-5 zoom" style="transition-delay: 0.1s">
                         <div class="relative flex items-center justify-center mx-4">
-                            <!-- Efek denyut -->
-                            <span class="animate-ping absolute inline-flex h-9 w-9 rounded-full bg-white/80 opacity-50 group-hover:opacity-100 transition-opacity duration-300"></span>
-                            <!-- Ikon Kado -->
-                            <div class="w-10 h-10 rounded-full border-[1.5px] border-white/80 bg-white/80 flex items-center justify-center group-hover:bg-white/90 transition-colors duration-300 shadow-[0_4px_15px_rgba(0,0,0,0.05)] z-10">
-                                <i class="fas fa-gift text-biru-teks text-[15px] group-hover:scale-110 transition-transform duration-300"></i>
+                            <div class="w-10 h-10 rounded-full border-[1.5px] border-white/80 bg-white/80 flex items-center justify-center shadow-sm z-10">
+                                <i class="fas fa-gift text-biru-teks text-[15px]"></i>
                             </div>
-                        </div>
-                        
-                        <!-- Ornamen Kanan -->
-                        <div class="flex items-center gap-1.5 opacity-40 group-hover:opacity-80 transition-all duration-500 group-hover:translate-x-2">
-                            <div class="w-2 h-2 bg-biru-teks transform rotate-45"></div>
-                            <div class="w-1.5 h-1.5 bg-biru-teks transform rotate-45"></div>
-                            <div class="w-1 h-1 rounded-full bg-biru-teks"></div>
                         </div>
                     </div>
 
@@ -830,20 +807,20 @@ Kec. Medan Petisah, Kota Medan</textarea>
                     </p>
 
                     <div class="{{TOMBOL_REKENING_CLASS}} mb-8 w-[90%] muncul" style="transition-delay: 0.3s">
-                        <button id="btn-toggle-rekening" class="w-full bg-biru-teks hover:bg-[#0e2242] text-white border border-emas/40 font-montserrat font-bold text-[9.5px] tracking-[0.2em] py-3.5 rounded-md transition-colors duration-300 flex items-center justify-center gap-3 group shadow-md"><i id="icon-toggle-rekening" class="fas fa-search group-hover:scale-110 transition-transform"></i><span id="text-toggle-rekening">LIHAT REKENING</span></button>
+                        <button id="btn-toggle-rekening" class="w-full bg-biru-teks hover:bg-[#0e2242] text-white border border-emas/40 font-montserrat font-bold text-[9.5px] tracking-[0.2em] py-3.5 rounded-md transition-colors duration-300 flex items-center justify-center gap-3 shadow-md"><i id="icon-toggle-rekening" class="fas fa-search"></i><span id="text-toggle-rekening">LIHAT REKENING</span></button>
                     </div>
 
                     <div id="box-rekening" class="{{BOX_REKENING_CLASS}} flex-col gap-4 w-full items-center muncul">
                         {{SECTION_GIFT}}
                     </div>
                 </div>
-                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-150,f-auto" alt="Quran" class="absolute -bottom-2 -left-4 w-28 opacity-90 z-20 drop-shadow-lg pointer-events-none" loading="lazy" decoding="async">
-                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-150,f-auto" alt="Quran" class="absolute -bottom-2 -right-4 w-28 opacity-90 z-20 drop-shadow-lg transform scale-x-[-1] pointer-events-none" loading="lazy" decoding="async">
+                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-330,f-auto" alt="Quran" class="absolute -bottom-2 -left-4 w-28 opacity-95 z-20 pointer-events-none" loading="lazy" decoding="async">
+                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-330,f-auto" alt="Quran" class="absolute -bottom-2 -right-4 w-28 opacity-95 z-20 transform scale-x-[-1] pointer-events-none" loading="lazy" decoding="async">
             </section>
 
             <!-- RSVP -->
             <section id="ucapan" class="relative w-full flex flex-col items-center justify-center p-5 z-10 py-16">
-                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/lampion%20muslim.png?tr=w-400,q-80,f-auto" alt="Lampion" class="absolute top-0 left-0 w-full z-0 naik-turun pointer-events-none opacity-90" loading="lazy" decoding="async">
+                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/lampion%20muslim.png?tr=w-750,q-95,f-auto" alt="Lampion" class="absolute top-0 left-0 w-full z-0 naik-turun pointer-events-none opacity-95" loading="lazy" decoding="async">
                 <div class="w-full max-w-[340px] premium-card rounded-[2rem] p-6 flex flex-col items-center relative mt-8 mb-6">
                     <div class="absolute inset-[8px] border-[1px] border-white/40 rounded-[1.6rem] pointer-events-none z-0"></div>
 
@@ -858,11 +835,10 @@ Kec. Medan Petisah, Kota Medan</textarea>
                     </p>
 
                     <div class="w-full bg-white/30 border border-white/50 rounded-2xl p-6 mb-8 shadow-sm relative z-10">
-                        <div class="flex flex-col items-center justify-center mb-6 relative z-10 zoom group cursor-pointer">
+                        <div class="flex flex-col items-center justify-center mb-6 relative z-10 zoom">
                             <div class="relative flex items-center justify-center mb-3">
-                                <span class="animate-ping absolute inline-flex h-10 w-10 rounded-full bg-white/80 opacity-50 group-hover:opacity-100 transition-opacity duration-300"></span>
-                                <div class="w-12 h-12 rounded-full border-[1.5px] border-white/80 bg-white/80 flex items-center justify-center transition-colors duration-300 shadow-[0_4px_15px_rgba(0,0,0,0.05)] z-10">
-                                    <i class="far fa-envelope-open text-[18px] text-biru-teks group-hover:scale-110 transition-transform duration-300"></i>
+                                <div class="w-12 h-12 rounded-full border-[1.5px] border-white/80 bg-white/80 flex items-center justify-center shadow-sm z-10">
+                                    <i class="far fa-envelope-open text-[18px] text-biru-teks"></i>
                                 </div>
                             </div>
                             <h3 class="font-playfair text-[24px] font-bold text-biru-teks tracking-wide">Buku Tamu</h3>
@@ -871,30 +847,30 @@ Kec. Medan Petisah, Kota Medan</textarea>
                         </div>
 
                         <form id="form-rsvp" class="flex flex-col gap-4 relative z-10 w-full">
-                            <div class="relative group muncul">
-                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-[#5179bc] text-biru-teks/50"><i class="far fa-user text-[14px]"></i></div>
-                                <input type="text" id="input-nama" placeholder="Nama Lengkap Anda" required class="bg-white/50 border border-white/60 rounded-xl py-3.5 pl-11 pr-4 text-biru-teks font-montserrat text-[12px] w-full transition-colors duration-300 focus:outline-none focus:border-[#5179bc] focus:bg-white/80 placeholder:text-biru-teks/50" maxlength="50">
+                            <div class="relative muncul">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-biru-teks/50"><i class="far fa-user text-[14px]"></i></div>
+                                <input type="text" id="input-nama" placeholder="Nama Lengkap Anda" required class="bg-white/50 border border-white/60 rounded-xl py-3.5 pl-11 pr-4 text-biru-teks font-montserrat text-[12px] w-full focus:outline-none focus:border-[#5179bc] focus:bg-white/80 placeholder:text-biru-teks/50" maxlength="50">
                             </div>
 
-                            <div class="relative group muncul">
-                                <div class="absolute top-3.5 left-0 pl-4 flex items-start pointer-events-none transition-colors group-focus-within:text-[#5179bc] text-biru-teks/50"><i class="fas fa-pen-nib text-[14px]"></i></div>
-                                &lt;textarea id="input-ucapan" placeholder="Tuliskan doa &amp; harapan baik..." rows="4" required class="bg-white/50 border border-white/60 rounded-xl py-3.5 pl-11 pr-4 text-biru-teks font-montserrat text-[12px] w-full transition-colors duration-300 focus:outline-none focus:border-[#5179bc] focus:bg-white/80 placeholder:text-biru-teks/50 resize-none" maxlength="300"&gt;&lt;/textarea&gt;
+                            <div class="relative muncul">
+                                <div class="absolute top-3.5 left-0 pl-4 flex items-start pointer-events-none text-biru-teks/50"><i class="fas fa-pen-nib text-[14px]"></i></div>
+                                &lt;textarea id="input-ucapan" placeholder="Tuliskan doa &amp; harapan baik..." rows="4" required class="bg-white/50 border border-white/60 rounded-xl py-3.5 pl-11 pr-4 text-biru-teks font-montserrat text-[12px] w-full focus:outline-none focus:border-[#5179bc] focus:bg-white/80 placeholder:text-biru-teks/50 resize-none" maxlength="300"&gt;&lt;/textarea&gt;
                             </div>
 
-                            <div class="relative group muncul">
-                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-[#5179bc] text-biru-teks/50"><i class="far fa-check-circle text-[14px]"></i></div>
-                                <select id="input-kehadiran" required class="appearance-none bg-white/50 border border-white/60 rounded-xl py-3.5 pl-11 pr-10 text-biru-teks font-montserrat text-[12px] w-full transition-colors duration-300 focus:outline-none focus:border-[#5179bc] focus:bg-white/80 cursor-pointer">
+                            <div class="relative muncul">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-biru-teks/50"><i class="far fa-check-circle text-[14px]"></i></div>
+                                <select id="input-kehadiran" required class="appearance-none bg-white/50 border border-white/60 rounded-xl py-3.5 pl-11 pr-10 text-biru-teks font-montserrat text-[12px] w-full focus:outline-none focus:border-[#5179bc] focus:bg-white/80 cursor-pointer">
                                     <option value="" disabled selected class="text-gray-500">Konfirmasi Kehadiran</option>
                                     <option value="Hadir">Hadir</option>
                                     <option value="Masih Ragu">Masih Ragu</option>
                                     <option value="Tidak Hadir">Tidak Hadir</option>
                                 </select>
-                                <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-biru-teks/50 group-focus-within:text-[#5179bc]"><i class="fas fa-chevron-down text-[12px]"></i></div>
+                                <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-biru-teks/50"><i class="fas fa-chevron-down text-[12px]"></i></div>
                             </div>
 
                             <div class="w-full mt-2 zoom">
-                                <button type="button" id="btn-preview-kirim" class="w-full relative bg-biru-teks hover:bg-[#0e2242] text-white border border-emas/40 font-montserrat font-bold text-[9.5px] tracking-[0.2em] py-3.5 rounded-md transition-colors duration-300 flex justify-center items-center gap-3 group shadow-md">
-                                    <i class="fas fa-paper-plane group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform duration-300"></i> KIRIM UCAPAN
+                                <button type="button" id="btn-preview-kirim" class="w-full relative bg-biru-teks hover:bg-[#0e2242] text-white border border-emas/40 font-montserrat font-bold text-[9.5px] tracking-[0.2em] py-3.5 rounded-md transition-colors duration-300 flex justify-center items-center gap-3 shadow-md">
+                                    <i class="fas fa-paper-plane"></i> KIRIM UCAPAN
                                 </button>
                             </div>
                         </form>
@@ -919,13 +895,13 @@ Kec. Medan Petisah, Kota Medan</textarea>
                         </p>
                     </div>
                 </div>
-                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-150,f-auto" alt="Quran" class="absolute -bottom-2 -left-4 w-28 opacity-90 z-20 drop-shadow-lg pointer-events-none" loading="lazy" decoding="async">
-                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-150,f-auto" alt="Quran" class="absolute -bottom-2 -right-4 w-28 opacity-90 z-20 drop-shadow-lg transform scale-x-[-1] pointer-events-none" loading="lazy" decoding="async">
+                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-330,f-auto" alt="Quran" class="absolute -bottom-2 -left-4 w-28 opacity-95 z-20 pointer-events-none" loading="lazy" decoding="async">
+                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-330,f-auto" alt="Quran" class="absolute -bottom-2 -right-4 w-28 opacity-95 z-20 transform scale-x-[-1] pointer-events-none" loading="lazy" decoding="async">
             </section>
 
             <!-- PENUTUP -->
             <section id="penutup" class="relative w-full flex flex-col items-center justify-center p-5 pt-16 pb-20 z-20">
-                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/lampion%20muslim.png?tr=w-400,q-80,f-auto" alt="Lampion" class="absolute top-0 left-0 w-full z-0 naik-turun pointer-events-none opacity-90" loading="lazy" decoding="async">
+                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/lampion%20muslim.png?tr=w-750,q-95,f-auto" alt="Lampion" class="absolute top-0 left-0 w-full z-0 naik-turun pointer-events-none opacity-95" loading="lazy" decoding="async">
                 <div class="w-full max-w-[340px] premium-card rounded-[2rem] p-6 md:p-8 flex flex-col items-center relative mt-8 mb-6">
                     <div class="absolute inset-[8px] border-[1px] border-white/40 rounded-[1.6rem] pointer-events-none z-0"></div>
 
@@ -939,28 +915,11 @@ Kec. Medan Petisah, Kota Medan</textarea>
                         Merupakan suatu kebahagiaan dan kehormatan bagi kami, apabila Bpk / Ibu / Saudara/i dan teman-teman, berkenan hadir dan memberikan do'a.
                     </p>
 
-                    <!-- Ornamen Interaktif (Gaya Cluster) -->
-                    <div class="flex items-center justify-center w-full mb-6 zoom cursor-pointer group" style="transition-delay: 0.1s">
-                        <!-- Ornamen Kiri -->
-                        <div class="flex items-center gap-1.5 opacity-40 group-hover:opacity-80 transition-all duration-500 group-hover:-translate-x-2">
-                            <div class="w-1 h-1 rounded-full bg-biru-teks"></div>
-                            <div class="w-1.5 h-1.5 bg-biru-teks transform rotate-45"></div>
-                            <div class="w-2 h-2 bg-biru-teks transform rotate-45"></div>
-                        </div>
-                        
-                        <!-- Tengah (Icon) -->
+                    <div class="flex items-center justify-center w-full mb-6 zoom" style="transition-delay: 0.1s">
                         <div class="relative flex items-center justify-center mx-4">
-                            <span class="animate-ping absolute inline-flex h-9 w-9 rounded-full bg-white/80 opacity-50 group-hover:opacity-100 transition-opacity duration-300"></span>
-                            <div class="w-10 h-10 rounded-full border-[1.5px] border-white/80 bg-white/80 flex items-center justify-center group-hover:bg-white/90 transition-colors duration-300 shadow-[0_4px_15px_rgba(0,0,0,0.05)] z-10">
-                                <i class="fas fa-praying-hands text-biru-teks text-[15px] group-hover:scale-110 transition-transform duration-300"></i>
+                            <div class="w-10 h-10 rounded-full border-[1.5px] border-white/80 bg-white/80 flex items-center justify-center shadow-sm z-10">
+                                <i class="fas fa-praying-hands text-biru-teks text-[15px]"></i>
                             </div>
-                        </div>
-                        
-                        <!-- Ornamen Kanan -->
-                        <div class="flex items-center gap-1.5 opacity-40 group-hover:opacity-80 transition-all duration-500 group-hover:translate-x-2">
-                            <div class="w-2 h-2 bg-biru-teks transform rotate-45"></div>
-                            <div class="w-1.5 h-1.5 bg-biru-teks transform rotate-45"></div>
-                            <div class="w-1 h-1 rounded-full bg-biru-teks"></div>
                         </div>
                     </div>
 
@@ -990,8 +949,8 @@ Kec. Medan Petisah, Kota Medan</textarea>
                         Wassalamualaikum Wr. Wb.
                     </h3>
                 </div>
-                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-150,f-auto" alt="Quran" class="absolute -bottom-4 -left-6 w-28 opacity-90 z-30 drop-shadow-lg pointer-events-none" loading="lazy" decoding="async">
-                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-150,f-auto" alt="Quran" class="absolute -bottom-4 -right-6 w-28 opacity-90 z-30 drop-shadow-lg transform scale-x-[-1] pointer-events-none" loading="lazy" decoding="async">
+                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-330,f-auto" alt="Quran" class="absolute -bottom-4 -left-6 w-28 opacity-80 z-30 pointer-events-none" loading="lazy" decoding="async">
+                <img src="https://ik.imagekit.io/asetundangan/aset/khitan/3D-Quran-Kuning.png?tr=w-330,f-auto" alt="Quran" class="absolute -bottom-4 -right-6 w-28 opacity-80 z-30 transform scale-x-[-1] pointer-events-none" loading="lazy" decoding="async">
             </section>
 
             <!-- FOOTER -->
@@ -1010,7 +969,7 @@ Kec. Medan Petisah, Kota Medan</textarea>
     </div>
 
     <!-- SCRIPT INTERAKSI -->
-    <script>
+    &lt;script&gt;
         // Logika Custom Nama Tamu
         (function () {
             'use strict';
@@ -1027,48 +986,24 @@ Kec. Medan Petisah, Kota Medan</textarea>
             });
         })();
 
-        // Matikan Scroll Native untuk animasi Mulus (Hanya di Desktop)
-        if (window.innerWidth >= 768) {
-            (function killNativeSmooth(){ const style = document.createElement('style'); style.id = 'gsap-smooth-killer'; style.textContent = 'html{scroll-behavior:auto !important;}'; document.head.appendChild(style); })();
-        }
         if (typeof gsap !== 'undefined' && typeof ScrollToPlugin !== 'undefined') { gsap.registerPlugin(ScrollToPlugin); }
 
-        // Script Khusus Spesifik Tema (Lenis & Lightbox)
+        // Lightbox Galeri (Tetap Sama Namun Tanpa Lenis)
         document.addEventListener('DOMContentLoaded', () => {
-            let lenis;
-            
-            // Eksekusi Smooth Scroll (Lenis) HANYA jika dibuka di layar Laptop/Tablet besar
-            if (window.innerWidth >= 768) {
-                lenis = new Lenis({ duration: 1.5, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), direction: 'vertical', gestureDirection: 'vertical', smooth: true, smoothWheel: true, wheelMultiplier: 1, smoothTouch: false, touchMultiplier: 2 });
-                gsap.ticker.add((time) => { lenis.raf(time * 1000); }); gsap.ticker.lagSmoothing(0);
-            }
-
-            // Lightbox Galeri
             const lightbox = document.createElement('div'); lightbox.id = 'gallery-lightbox'; lightbox.className = 'fixed inset-0 z-[99999] bg-black/95 hidden flex-col items-center justify-center opacity-0 transition-opacity duration-300 backdrop-blur-md';
             const closeBtn = document.createElement('button'); closeBtn.className = 'absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 text-white text-xl hover:bg-emas hover:text-biru-teks transition-all z-50 focus:outline-none shadow-lg border border-white/20 cursor-pointer'; closeBtn.innerHTML = '<i class="fas fa-times"></i>';
             const imgContainer = document.createElement('div'); imgContainer.className = 'relative w-[95%] max-w-[800px] h-auto max-h-[90vh] flex items-center justify-center';
             const imgLightbox = document.createElement('img'); imgLightbox.className = 'max-w-full max-h-[90vh] w-auto h-auto object-contain rounded-xl shadow-[0_0_40px_rgba(0,0,0,0.5)] transform scale-95 transition-transform duration-300 border-[2px] border-emas/50';
             imgContainer.appendChild(imgLightbox); lightbox.appendChild(closeBtn); lightbox.appendChild(imgContainer); document.body.appendChild(lightbox);
 
-            const closeLightbox = () => { lightbox.classList.remove('opacity-100'); lightbox.classList.add('opacity-0'); imgLightbox.classList.remove('scale-100'); imgLightbox.classList.add('scale-95'); setTimeout(() => { lightbox.classList.remove('flex'); lightbox.classList.add('hidden'); if(lenis) lenis.start(); }, 300); };
+            const closeLightbox = () => { lightbox.classList.remove('opacity-100'); lightbox.classList.add('opacity-0'); imgLightbox.classList.remove('scale-100'); imgLightbox.classList.add('scale-95'); setTimeout(() => { lightbox.classList.remove('flex'); lightbox.classList.add('hidden'); }, 300); };
             closeBtn.addEventListener('click', closeLightbox); lightbox.addEventListener('click', (e) => { if(e.target === lightbox || e.target === imgContainer) closeLightbox(); });
 
             const galleryImages = document.querySelectorAll('#galeri img');
             galleryImages.forEach(img => {
                 img.style.cursor = 'zoom-in'; img.classList.add('hover:opacity-80', 'transition-opacity', 'duration-300');
-                img.addEventListener('click', () => { imgLightbox.src = img.src.replace(/tr=[a-zA-Z0-9,-]+/, 'tr=w-1200,q-90,f-auto'); lightbox.classList.remove('hidden'); lightbox.classList.add('flex'); if(lenis) lenis.stop(); void lightbox.offsetWidth; lightbox.classList.remove('opacity-0'); lightbox.classList.add('opacity-100'); imgLightbox.classList.remove('scale-95'); imgLightbox.classList.add('scale-100'); });
+                img.addEventListener('click', () => { imgLightbox.src = img.src.replace(/tr=[a-zA-Z0-9,-]+/, 'tr=w-1200,q-90,f-auto'); lightbox.classList.remove('hidden'); lightbox.classList.add('flex'); void lightbox.offsetWidth; lightbox.classList.remove('opacity-0'); lightbox.classList.add('opacity-100'); imgLightbox.classList.remove('scale-95'); imgLightbox.classList.add('scale-100'); });
             });
-
-            // Observer tambahan untuk animasi spesifik tema (muncul-kiri & muncul-kanan)
-            const themeObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                        themeObserver.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.15 });
-            document.querySelectorAll('.muncul-kiri, .muncul-kanan').forEach(el => themeObserver.observe(el));
         });
 
         // ===============================================
@@ -1077,10 +1012,10 @@ Kec. Medan Petisah, Kota Medan</textarea>
         {{LOGIKA_INTERAKSI}}
         
         {{COUNTDOWN_TARGET}}
-    </script>
+    &lt;/script&gt;
 
     <!-- SCRIPT FIREBASE -->
-    <script type="module">
+    &lt;script type="module"&gt;
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
@@ -1161,7 +1096,7 @@ Kec. Medan Petisah, Kota Medan</textarea>
             document.getElementById('modal-actions').innerHTML = btnHtml; modal.classList.add('active');
         }
         window.tutupModal = function() { modal.classList.remove('active'); }
-    </script>
+    &lt;/script&gt;
 </body>
 </html>
 </textarea>
@@ -1574,10 +1509,10 @@ Kec. Medan Petisah, Kota Medan</textarea>
         let htmlGift = '';
         listRekening.forEach((r, idx) => {
             htmlGift += `
-            <div class="relative w-full max-w-[280px] aspect-[1.58/1] bg-[#e0e0e0] bg-cover bg-center rounded-xl p-5 shadow-sm flex flex-col justify-between overflow-hidden border border-gray-400" style="background-image: url('https://ik.imagekit.io/asetundangan/aset/icon-bank/Background-atm.webp?tr=w-500,q-80,f-auto');">
+            <div class="relative w-full max-w-[280px] aspect-[1.58/1] bg-[#e0e0e0] bg-cover bg-center rounded-xl p-5 shadow-sm flex flex-col justify-between overflow-hidden border border-gray-400" style="background-image: url('https://ik.imagekit.io/asetundangan/aset/icon-bank/Background-atm.webp?tr=w-700,q-95,f-auto');">
                 <div class="flex justify-between items-start w-full z-10">
-                    <img src="https://ik.imagekit.io/asetundangan/aset/icon-bank/chip-atm-undangan.webp?tr=w-100,f-auto" alt="Chip" class="w-10 opacity-80 mix-blend-multiply" loading="lazy">
-                    <img src="https://ik.imagekit.io/asetundangan/aset/icon-bank/${r.logo}?tr=w-150,f-auto" onerror="this.src='https://ik.imagekit.io/asetundangan/aset/icon-bank/Logo-Bank-BCA-1.png?tr=w-150,f-auto'" alt="${r.bank}" class="h-[28px] w-auto object-contain" loading="lazy">
+                    <img src="https://ik.imagekit.io/asetundangan/aset/icon-bank/chip-atm-undangan.webp" alt="Chip" class="w-10 mix-blend-multiply" loading="lazy">
+                    <img src="https://ik.imagekit.io/asetundangan/aset/icon-bank/${r.logo}?tr=w-250,f-auto" onerror="this.src='https://ik.imagekit.io/asetundangan/aset/icon-bank/Logo-Bank-BCA-1.png?tr=w-250,f-auto'" alt="${r.bank}" class="h-[28px] w-auto object-contain" loading="lazy">
                 </div>
                 <div class="flex flex-col items-end w-full z-10 mt-auto">
                     <h5 class="font-montserrat text-[10px] font-bold tracking-[0.1em] text-gray-700 mb-1">${r.nama.toUpperCase()}</h5>
