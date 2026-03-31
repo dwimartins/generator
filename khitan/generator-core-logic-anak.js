@@ -269,7 +269,6 @@ window.SistemLogikaAnak = {
             { nama: "Bank BSI", file: "Logo-Bank-BSI.png" },
             { nama: "Bank BTN", file: "logo-bank-BTN.png" },
             { nama: "Bank CIMB Niaga", file: "Logo-Bank-CIMB-Niaga.png" },
-            { nama: "Bank CIMB Niaga (Alt)", file: "cimb-niaga-vector-logo.png" },
             { nama: "Bank DKI", file: "Logo-Bank-DKI.png" },
             { nama: "Bank Jago", file: "Logo-bank-jago.png" },
             { nama: "Bank Jambi", file: "Logo-Bank-Jambi.png" },
