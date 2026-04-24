@@ -40,10 +40,10 @@
         .sortable-drag { cursor: grabbing !important; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen font-sans antialiased selection:bg-blue-500 selection:text-white pb-20">
+<body class="bg-slate-50 text-slate-800 lg:h-screen lg:flex lg:flex-col lg:overflow-hidden font-sans antialiased selection:bg-blue-500 selection:text-white pb-20 lg:pb-0">
 
     <!-- Navbar -->
-    <nav class="bg-white/90 backdrop-blur-md border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+    <nav class="bg-white/90 backdrop-blur-md border-b border-slate-200 sticky top-0 z-40 shadow-sm lg:shrink-0">
         <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <div class="flex items-center gap-3">
@@ -67,21 +67,21 @@
     </nav>
 
     <!-- Main Layout Container (Expanded max-width for Explorer look) -->
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-6 flex flex-col lg:flex-row gap-6 items-start">
+    <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 mt-6 lg:mt-0 lg:py-6 flex flex-col lg:flex-row gap-6 items-start lg:flex-1 lg:overflow-hidden">
         
-        <!-- Sidebar Wrapper: Contains Toggle Button & Sidebar Panel -->
-        <div id="sidebar-wrapper" class="w-full lg:w-[420px] shrink-0 lg:sticky lg:top-20 transition-all duration-300 flex flex-col gap-3">
+        <!-- Sidebar Wrapper: Contains Sidebar Panel -->
+        <div id="sidebar-wrapper" class="w-full lg:w-[420px] shrink-0 lg:transition-all lg:duration-300 flex flex-col lg:h-full relative min-h-0">
             
-            <!-- Toggle Button (Explorer Style) -->
-            <div class="flex justify-start">
-                <button onclick="toggleSidebar()" id="sidebar-toggle-btn" class="flex items-center justify-center bg-white hover:bg-blue-50 text-slate-600 hover:text-blue-600 border border-slate-200 shadow-sm w-9 h-9 rounded-lg transition-colors" title="Sembunyikan/Tampilkan Panel">
+            <!-- Toggle Button (Mobile Only) -->
+            <div class="flex justify-start shrink-0 lg:hidden mb-3">
+                <button onclick="toggleSidebar()" id="mobile-toggle-btn" class="flex items-center justify-center bg-white hover:bg-blue-50 text-slate-600 hover:text-blue-600 border border-slate-200 shadow-sm w-9 h-9 rounded-lg transition-colors" title="Sembunyikan/Tampilkan Panel">
                     <i class="ph ph-sidebar-simple text-xl"></i>
                 </button>
             </div>
 
             <!-- Sidebar Panel: Link Penting -->
-            <aside id="sidebar" class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 w-full transition-all duration-300 origin-left overflow-hidden">
-                <div class="flex items-center justify-between mb-4">
+            <aside id="sidebar" class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 w-full flex-1 flex flex-col transition-all duration-300 origin-left min-h-0">
+                <div class="flex items-center justify-between mb-4 shrink-0">
                     <h2 class="font-bold text-slate-800 flex items-center gap-2 text-sm">
                         <i class="ph ph-link text-blue-600 text-lg"></i> Link Penting
                     </h2>
@@ -90,17 +90,23 @@
                     </button>
                 </div>
                 
-                <div id="links-content" class="space-y-3">
+                <!-- Area ini yang sekarang bisa di-scroll -->
+                <div id="links-content" class="space-y-3 flex-1 overflow-y-auto pr-1 pb-2">
                     <!-- Loading State Links -->
                     <div class="flex justify-center py-4">
                         <i class="ph ph-spinner-gap animate-spin text-2xl text-blue-500"></i>
                     </div>
                 </div>
             </aside>
+
+            <!-- Desktop Toggle Button -->
+            <button onclick="toggleSidebar()" class="hidden lg:flex absolute top-1/2 -right-4 transform -translate-y-1/2 items-center justify-center bg-white hover:bg-blue-50 text-slate-400 hover:text-blue-600 border border-slate-200 shadow-md w-5 h-16 rounded-r-lg transition-colors z-10 cursor-pointer" title="Sembunyikan/Tampilkan Panel">
+                <i id="desktop-toggle-icon" class="ph ph-caret-left text-lg transition-transform duration-300"></i>
+            </button>
         </div>
 
         <!-- Main Content: Tema -->
-        <main class="w-full flex-1 transition-all duration-300 min-w-0" id="main-container">
+        <main class="w-full flex-1 transition-all duration-300 min-w-0 lg:h-full lg:overflow-y-auto lg:pr-2 lg:pb-10" id="main-container">
             <!-- Loading State Tema -->
             <div id="loading-state" class="flex flex-col items-center justify-center py-20">
                 <i class="ph ph-spinner-gap animate-spin text-4xl text-blue-500 mb-4"></i>
@@ -315,20 +321,33 @@
             isSidebarOpen = !isSidebarOpen;
             const sidebar = document.getElementById('sidebar');
             const wrapper = document.getElementById('sidebar-wrapper');
-            const toggleBtn = document.getElementById('sidebar-toggle-btn');
+            const mobileToggleBtn = document.getElementById('mobile-toggle-btn');
+            const desktopToggleIcon = document.getElementById('desktop-toggle-icon');
             
             if (isSidebarOpen) {
                 sidebar.classList.remove('hidden');
-                wrapper.classList.remove('lg:w-auto');
+                wrapper.classList.remove('lg:w-0');
                 wrapper.classList.add('lg:w-[420px]');
-                toggleBtn.classList.remove('bg-blue-50', 'text-blue-600', 'border-blue-200');
-                toggleBtn.classList.add('bg-white', 'text-slate-600', 'border-slate-200');
+                
+                if (mobileToggleBtn) {
+                    mobileToggleBtn.classList.remove('bg-blue-50', 'text-blue-600', 'border-blue-200');
+                    mobileToggleBtn.classList.add('bg-white', 'text-slate-600', 'border-slate-200');
+                }
+                if (desktopToggleIcon) {
+                    desktopToggleIcon.classList.remove('rotate-180');
+                }
             } else {
                 sidebar.classList.add('hidden');
                 wrapper.classList.remove('lg:w-[420px]');
-                wrapper.classList.add('lg:w-auto');
-                toggleBtn.classList.add('bg-blue-50', 'text-blue-600', 'border-blue-200');
-                toggleBtn.classList.remove('bg-white', 'text-slate-600', 'border-slate-200');
+                wrapper.classList.add('lg:w-0');
+                
+                if (mobileToggleBtn) {
+                    mobileToggleBtn.classList.add('bg-blue-50', 'text-blue-600', 'border-blue-200');
+                    mobileToggleBtn.classList.remove('bg-white', 'text-slate-600', 'border-slate-200');
+                }
+                if (desktopToggleIcon) {
+                    desktopToggleIcon.classList.add('rotate-180');
+                }
             }
             
             updateGridColumns();
@@ -423,6 +442,9 @@
                             <div id="dropdown-${link.id}" class="hidden absolute right-0 mt-1 w-28 bg-white border border-slate-200 rounded-lg shadow-xl z-[60] overflow-hidden">
                                 <button onclick="editLink('${link.id}')" class="w-full text-left px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-blue-600 flex items-center gap-2 transition">
                                     <i class="ph ph-pencil-simple text-sm"></i> Edit
+                                </button>
+                                <button onclick="duplicateLink('${link.id}')" class="w-full text-left px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-blue-600 flex items-center gap-2 transition">
+                                    <i class="ph ph-copy text-sm"></i> Duplikat
                                 </button>
                                 <div class="h-px bg-slate-100"></div>
                                 <button onclick="confirmDelete('${link.id}', 'link')" class="w-full text-left px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 flex items-center gap-2 transition">
@@ -874,6 +896,28 @@
 
             document.getElementById('link-modal-title').innerText = 'Edit Link Penting';
             document.getElementById('btn-submit-link').innerHTML = '<i class="ph ph-check-circle text-lg"></i><span>Update Link</span>';
+            
+            document.getElementById(`dropdown-${id}`).classList.add('hidden');
+
+            const modal = document.getElementById('link-modal');
+            const panel = document.getElementById('link-modal-panel');
+            modal.classList.remove('hidden');
+            panel.classList.remove('modal-exit', 'modal-exit-active');
+            panel.classList.add('modal-enter');
+            requestAnimationFrame(() => panel.classList.add('modal-enter-active'));
+        };
+
+        window.duplicateLink = (id) => {
+            const link = allLinks.find(l => l.id === id);
+            if (!link) return;
+
+            document.getElementById('link-id').value = ''; 
+            document.getElementById('link-title').value = link.title + ' (Copy)';
+            document.getElementById('link-desc').value = link.description || '';
+            document.getElementById('link-url').value = link.url;
+
+            document.getElementById('link-modal-title').innerText = 'Duplikat Link Penting';
+            document.getElementById('btn-submit-link').innerHTML = '<i class="ph ph-files text-lg"></i><span>Simpan Sebagai Baru</span>';
             
             document.getElementById(`dropdown-${id}`).classList.add('hidden');
 
