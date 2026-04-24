@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Thumbnail Undangan</title>
+    <!-- Tailwind CSS untuk Styling Cepat -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- PENTING: Memuat Data Tema Eksternal yang baru saja kita buat -->
+    <script src="data-tema.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Croissant+One&family=Dancing+Script:wght@400;700&family=Great+Vibes&family=Italiana&family=Lora:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Sacramento&family=Yeseva+One&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Memastikan body tidak ada scroll horizontal */
+        body { overflow-x: hidden; background-color: #f8fafc; }
+        
+        /* Area Canvas */
+        .canvas-container {
+            width: 100%;
+            /* Memberikan efek bayangan dan border radius agar UI terlihat rapi */
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+            overflow: hidden;
+            background: #fff;
+        }
+        
+        /* Tampilan canvas itu sendiri, menyesuaikan lebar container */
+        canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        /* Custom scrollbar untuk menu settings agar rapi */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Reset khusus input color agar terlihat rapi */
+        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        input[type="color"]::-webkit-color-swatch { border: none; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased font-sans">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-slate-200 p-4 sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <h1 class="text-xl font-bold text-slate-800">OG Meta Generator</h1>
+            </div>
+            <button id="btnDownloadHeader" class="hidden md:flex bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium items-center gap-2 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+                Download Gambar
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Kiri: Area Canvas Preview -->
+        <section class="lg:col-span-7 flex flex-col gap-4 sticky top-24">
+            <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-200">
+                <div class="flex justify-between items-center mb-3 px-1">
+                    <h2 class="text-sm font-semibold text-slate-500 uppercase tracking-wider">Preview Real-time</h2>
+                    <span class="text-xs bg-slate-100 text-slate-500 px-2 py-1 rounded">1200 x 750 px</span>
+                </div>
+                
+                <!-- Pembungkus Canvas -->
+                <div class="canvas-container relative bg-slate-50 flex items-center justify-center min-h-[300px]">
+                    <div id="loadingIndicator" class="absolute flex flex-col items-center justify-center text-slate-400">
+                        <svg class="animate-spin h-8 w-8 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span>Memuat Font & Aset...</span>
+                    </div>
+                    <!-- 
+                        Resolusi Asli Canvas diset ke 1200x750 agar gambar tidak pecah.
+                        CSS width 100% akan membuatnya responsif mengikuti layar.
+                    -->
+                    <canvas id="mainCanvas" width="1200" height="750" class="opacity-0 transition-opacity duration-500"></canvas>
+                </div>
+            </div>
+
+            <!-- Tombol Download Mobile -->
+            <button id="btnDownloadMobile" class="md:hidden w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition shadow-lg shadow-blue-500/30">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+                Download Gambar
+            </button>
+        </section>
+
+        <!-- Kanan: Area Pengaturan -->
+        <section class="lg:col-span-5 flex flex-col gap-6">
+
+            <!-- Pilihan Tema -->
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                <label class="block text-sm font-bold text-slate-800 mb-2">Pilih Tema Desain</label>
+                <select id="themeSelector" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-slate-700 bg-slate-50 cursor-pointer">
+                    <!-- Opsi akan di-generate otomatis oleh JavaScript -->
+                </select>
+            </div>
+            
+            <!-- Pengaturan Dasar (Form Isian) -->
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                <h2 class="text-lg font-bold text-slate-800 border-b pb-3 mb-4">Data Undangan</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Judul Acara</label>
+                        <input type="text" id="input_judul" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="Contoh: The Wedding Of">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Nama Mempelai</label>
+                        <input type="text" id="input_nama" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-lg font-semibold text-blue-800" placeholder="Contoh: Feliz & Felix">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Lokasi & Waktu Acara</label>
+                        <input type="text" id="input_lokasi" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="Contoh: Medan, 19 Maret 2026">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Opsi Ekspor Gambar -->
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                <div>
+                    <h3 class="font-medium text-slate-800">Resolusi Download</h3>
+                    <p class="text-xs text-slate-500">Default: Setengah ukuran (600x375 px)</p>
+                </div>
+                <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" id="chkFullResolution" class="rounded text-blue-500 focus:ring-blue-500 w-4 h-4 cursor-pointer">
+                    <span class="text-sm font-medium text-slate-700">HD Penuh</span>
+                </label>
+            </div>
+
+            <!-- Toggle Pengaturan Lanjutan -->
+            <div class="bg-slate-100 p-4 rounded-xl border border-slate-200 flex items-center justify-between">
+                <div>
+                    <h3 class="font-medium text-slate-800">Tata Letak & Gaya</h3>
+                    <p class="text-xs text-slate-500">Buka kunci untuk menggeser teks atau ubah font.</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="toggleAdvanced" class="sr-only peer">
+                    <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                </label>
+            </div>
+
+            <!-- Panel Pengaturan Lanjutan (Sembunyi by default) -->
+            <div id="advancedPanel" class="hidden bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex-col max-h-[600px]">
+                <div class="p-4 border-b bg-slate-50 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-500" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+                    </svg>
+                    <h3 class="font-semibold text-slate-700">Editor Lanjutan</h3>
+                </div>
+                
+                <!-- Area Scroll untuk form editor -->
+                <div id="advancedSettingsContainer" class="p-4 overflow-y-auto custom-scrollbar flex-1 space-y-6">
+                    <!-- Form elemen-elemen akan di-generate via JavaScript disini agar kodenya tidak berulang -->
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <script>
+        // ==========================================
+        // 1. STATE & KONFIGURASI DEFAULT
+        // ==========================================
+        
+        // Ambil data tema pertama dari file data-tema.js secara otomatis
+        let currentThemeId = Object.keys(daftarTema)[0];
+        let currentTheme = daftarTema[currentThemeId];
+        
+        // URL gambar template yang diberikan dari tema
+        let TEMPLATE_URL = currentTheme.template_url;
+        
+        // Ukuran Canvas Master
+        const CANVAS_WIDTH = 1200;
+        const CANVAS_HEIGHT = 750;
+        
+        // Daftar Font Pilihan
+        const FONT_OPTIONS = [
+            "Great Vibes", 
+            "Playfair Display", 
+            "Cinzel", 
+            "Dancing Script", 
+            "Lora",
+            "Italiana",
+            "Yeseva One",
+            "Sacramento",
+            "Croissant One"
+        ];
+
+        // Object State untuk menyimpan semua properti teks.
+        // Kita gabungkan input teks default dengan konfigurasi dari data-tema.js
+        const textElements = {
+            judul: {
+                label: "Judul Acara",
+                text: "The Wedding Of",
+                x: 600, // Tengah
+                ...currentTheme.teks.judul
+            },
+            nama: {
+                label: "Nama Mempelai",
+                text: "Feliz & Felix",
+                x: 600,
+                ...currentTheme.teks.nama
+            },
+            lokasi: {
+                label: "Lokasi & Waktu Acara",
+                text: "Medan, 19 Maret 2026",
+                x: 600,
+                ...currentTheme.teks.lokasi
+            }
+        };
+
+        // Objek Image untuk background
+        const bgImage = new Image();
+        // CrossOrigin anonymous sangat penting jika mengambil gambar dari domain lain agar bisa di-download via canvas
+        bgImage.crossOrigin = "anonymous"; 
+        
+        // Konteks Canvas
+        const canvas = document.getElementById('mainCanvas');
+        const ctx = canvas.getContext('2d');
+        let isReadyToRender = false;
+
+        // ==========================================
+        // 2. LOGIKA RENDERING CANVAS
+        // ==========================================
+        
+        function renderCanvas() {
+            if (!isReadyToRender) return;
+
+            // 1. Bersihkan canvas
+            ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+            // 2. Gambar Background (Skala menyesuaikan canvas 1200x750)
+            ctx.drawImage(bgImage, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+            // 3. Looping semua elemen teks untuk digambar
+            for (const key in textElements) {
+                const el = textElements[key];
+                
+                // Lewati jika teks kosong
+                if (!el.text || el.text.trim() === "") continue;
+
+                // Setup Font (Gunakan weight dinamis)
+                const fontWeight = el.weight || "400";
+                ctx.font = `${fontWeight} ${el.size}px '${el.font}', serif`;
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+
+                // Setup Efek Bayangan / Glow halus untuk meningkatkan keterbacaan (Opsional tapi bagus)
+                ctx.shadowColor = 'rgba(255, 255, 255, 0.7)';
+                ctx.shadowBlur = 4;
+                ctx.shadowOffsetX = 1;
+                ctx.shadowOffsetY = 1;
+
+                // Setup Warna (Solid vs Gradient)
+                if (el.color1 !== el.color2) {
+                    // Buat Gradient Vertikal (dari atas teks ke bawah teks)
+                    const gradient = ctx.createLinearGradient(el.x, el.y - (el.size/2), el.x, el.y + (el.size/2));
+                    gradient.addColorStop(0, el.color1);
+                    gradient.addColorStop(1, el.color2);
+                    ctx.fillStyle = gradient;
+                } else {
+                    ctx.fillStyle = el.color1;
+                }
+
+                // Gambar Teks
+                ctx.fillText(el.text, el.x, el.y);
+            }
+        }
+
+        // ==========================================
+        // 3. PEMBUATAN UI & EVENT LISTENER
+        // ==========================================
+
+        // Fungsi baru untuk menyambungkan UI Dropdown dengan data-tema.js
+        function initThemeSelector() {
+            const selector = document.getElementById('themeSelector');
+            selector.innerHTML = ''; // Hapus HTML bawaan, kita jadikan otomatis dari JS!
+            
+            // Generate list opsi secara dinamis berdasarkan jumlah tema yang Anda tulis di data-tema.js
+            for (const key in daftarTema) {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = daftarTema[key].nama_tema;
+                selector.appendChild(option);
+            }
+
+            // Dengarkan perintah: Kalau dropdown diganti, jalankan fungsi ganti tema
+            selector.addEventListener('change', (e) => {
+                changeTheme(e.target.value);
+            });
+        }
+
+        // Fungsi Eksekusi Ganti Tema Tanpa Reload Halaman
+        function changeTheme(themeId) {
+            const theme = daftarTema[themeId];
+            if (!theme) return;
+
+            // 1. Timpa settingan kordinat/warna lama dengan settingan dari tema baru.
+            // PENTING: Kita tidak menyentuh "textElements[key].text" agar teks yang sedang Anda ketik tidak hilang!
+            ['judul', 'nama', 'lokasi'].forEach(key => {
+                const themeData = theme.teks[key];
+                textElements[key].y = themeData.y;
+                textElements[key].size = themeData.size;
+                textElements[key].font = themeData.font;
+                textElements[key].weight = themeData.weight;
+                textElements[key].color1 = themeData.color1;
+                textElements[key].color2 = themeData.color2;
+            });
+
+            // 2. Karena nilai warna & font berubah, kita harus menyegarkan form Pengaturan Lanjutan di sisi kanan
+            buildAdvancedSettings(); 
+
+            // 3. Tampilkan efek loading berputar sebentar sambil mendownload gambar tema baru
+            isReadyToRender = false;
+            canvas.classList.add('opacity-30'); // Buat canvas agak buram saat loading
+            document.getElementById('loadingIndicator').style.display = 'flex';
+
+            // 4. Perintahkan sistem mengganti URL gambar (Otomatis memicu bgImage.onload)
+            TEMPLATE_URL = theme.template_url;
+            bgImage.src = TEMPLATE_URL; 
+        }
+
+        // Update state dasar dari input utama
+        function bindBasicInputs() {
+            const keys = ['judul', 'nama', 'lokasi'];
+            keys.forEach(key => {
+                const inputDom = document.getElementById(`input_${key}`);
+                // Set nilai awal input text
+                inputDom.value = textElements[key].text;
+                
+                // Listen perubahan
+                inputDom.addEventListener('input', (e) => {
+                    textElements[key].text = e.target.value;
+                    
+                    // Sinkronkan juga input teks di panel advanced jika sedang terbuka
+                    const advInput = document.getElementById(`adv_text_${key}`);
+                    if(advInput) advInput.value = e.target.value;
+                    
+                    renderCanvas();
+                });
+            });
+        }
+
+        // Generate form HTML untuk Panel Pengaturan Lanjutan
+        function buildAdvancedSettings() {
+            const container = document.getElementById('advancedSettingsContainer');
+            container.innerHTML = ''; // Kosongkan
+
+            for (const key in textElements) {
+                const el = textElements[key];
+                
+                // Buat Opsi Dropdown Font
+                const fontOptionsHtml = FONT_OPTIONS.map(font => 
+                    `<option value="${font}" ${el.font === font ? 'selected' : ''}>${font}</option>`
+                ).join('');
+
+                const sectionHtml = `
+                    <div class="bg-white p-4 rounded-lg border border-slate-100 shadow-sm mb-4">
+                        <div class="flex items-center justify-between mb-3 border-b pb-2">
+                            <h4 class="font-semibold text-slate-700 text-sm">${el.label}</h4>
+                            <div class="flex items-center gap-2">
+                                <label class="text-xs font-medium text-slate-600">Ketebalan:</label>
+                                <select id="adv_weight_${key}" class="text-xs px-2 py-1 bg-slate-50 border border-slate-200 rounded outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer">
+                                    <option value="300" ${el.weight === '300' ? 'selected' : ''}>300 (Tipis)</option>
+                                    <option value="400" ${el.weight === '400' ? 'selected' : ''}>400 (Normal)</option>
+                                    <option value="500" ${el.weight === '500' ? 'selected' : ''}>500 (Medium)</option>
+                                    <option value="600" ${el.weight === '600' ? 'selected' : ''}>600 (Semi-Bold)</option>
+                                    <option value="700" ${el.weight === '700' ? 'selected' : ''}>700 (Bold)</option>
+                                    <option value="800" ${el.weight === '800' ? 'selected' : ''}>800 (Extra Bold)</option>
+                                    <option value="900" ${el.weight === '900' ? 'selected' : ''}>900 (Black)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 gap-3">
+                            <!-- Teks & Font -->
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-[11px] text-slate-500 mb-1 uppercase tracking-wider">Teks</label>
+                                    <input type="text" id="adv_text_${key}" value="${el.text}" class="w-full text-sm px-2 py-1.5 bg-slate-50 border border-slate-200 rounded">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] text-slate-500 mb-1 uppercase tracking-wider">Font</label>
+                                    <select id="adv_font_${key}" class="w-full text-sm px-2 py-1.5 bg-slate-50 border border-slate-200 rounded" style="font-family: '${el.font}', sans-serif;">
+                                        ${fontOptionsHtml}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Posisi Y, Size (Tanpa Posisi X karena di-lock center) -->
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-[11px] text-slate-500 mb-1 uppercase tracking-wider">Posisi Y (Atas/Bawah)</label>
+                                    <input type="number" id="adv_y_${key}" value="${el.y}" class="w-full text-sm px-2 py-1.5 bg-slate-50 border border-slate-200 rounded focus:ring-2 focus:ring-blue-500 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] text-slate-500 mb-1 uppercase tracking-wider">Ukuran</label>
+                                    <input type="number" id="adv_size_${key}" value="${el.size}" min="10" max="400" class="w-full text-sm px-2 py-1.5 bg-slate-50 border border-slate-200 rounded focus:ring-2 focus:ring-blue-500 outline-none">
+                                </div>
+                            </div>
+
+                            <!-- Warna (Gradient Hex + Picker) -->
+                            <div>
+                                <label class="block text-[11px] text-slate-500 mb-1 uppercase tracking-wider">Warna (Pilih Hex atau Klik Kotak Warna)</label>
+                                <div class="flex items-center gap-2 w-full">
+                                    
+                                    <!-- Warna 1 -->
+                                    <div class="flex items-center bg-slate-50 border border-slate-200 rounded overflow-hidden flex-1 focus-within:ring-2 focus-within:ring-blue-500">
+                                        <input type="color" id="adv_cp1_${key}" value="${el.color1}" class="w-8 h-8 cursor-pointer bg-transparent border-none outline-none">
+                                        <input type="text" id="adv_c1_${key}" value="${el.color1}" class="w-full text-sm px-2 py-1.5 bg-transparent uppercase font-mono outline-none border-none" maxlength="7" placeholder="#FFFFFF">
+                                    </div>
+                                    
+                                    <!-- Tombol Tukar -->
+                                    <button type="button" id="adv_swap_c_${key}" class="p-1.5 bg-slate-100 hover:bg-blue-100 hover:text-blue-600 rounded text-slate-500 transition shadow-sm border border-slate-200 flex-shrink-0" title="Tukar Warna Gradiasi">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                        </svg>
+                                    </button>
+                                    
+                                    <!-- Warna 2 -->
+                                    <div class="flex items-center bg-slate-50 border border-slate-200 rounded overflow-hidden flex-1 focus-within:ring-2 focus-within:ring-blue-500">
+                                        <input type="color" id="adv_cp2_${key}" value="${el.color2}" class="w-8 h-8 cursor-pointer bg-transparent border-none outline-none">
+                                        <input type="text" id="adv_c2_${key}" value="${el.color2}" class="w-full text-sm px-2 py-1.5 bg-transparent uppercase font-mono outline-none border-none" maxlength="7" placeholder="#FFFFFF">
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', sectionHtml);
+            }
+
+            // Bind Events untuk elemen yang baru digenerate
+            for (const key in textElements) {
+                // Teks
+                document.getElementById(`adv_text_${key}`).addEventListener('input', (e) => {
+                    textElements[key].text = e.target.value;
+                    document.getElementById(`input_${key}`).value = e.target.value; // Sinkron ke form utama
+                    renderCanvas();
+                });
+                
+                // Font Family
+                const fontSelect = document.getElementById(`adv_font_${key}`);
+                fontSelect.addEventListener('change', (e) => {
+                    textElements[key].font = e.target.value;
+                    e.target.style.fontFamily = `'${e.target.value}', sans-serif`; // Ubah preview dropdown
+                    renderCanvas();
+                });
+
+                // Dropdown Weight (Ketebalan)
+                document.getElementById(`adv_weight_${key}`).addEventListener('change', (e) => {
+                    textElements[key].weight = e.target.value;
+                    renderCanvas();
+                });
+
+                // Number Inputs (Y, Size)
+                ['y', 'size'].forEach(prop => {
+                    document.getElementById(`adv_${prop}_${key}`).addEventListener('input', (e) => {
+                        const val = parseInt(e.target.value) || 0;
+                        textElements[key][prop] = val;
+                        renderCanvas();
+                    });
+                });
+
+                // Sinkronisasi Warna (Picker dan Teks Hex)
+                ['1', '2'].forEach(num => {
+                    const hexInput = document.getElementById(`adv_c${num}_${key}`);
+                    const pickerInput = document.getElementById(`adv_cp${num}_${key}`);
+                    const stateKey = `color${num}`;
+
+                    // Update dari text Hex ke Picker
+                    hexInput.addEventListener('input', (e) => {
+                        let val = e.target.value;
+                        if(val.length === 7 && val.startsWith('#')) {
+                            pickerInput.value = val;
+                            textElements[key][stateKey] = val;
+                            renderCanvas();
+                        }
+                    });
+
+                    // Update dari Picker ke text Hex
+                    pickerInput.addEventListener('input', (e) => {
+                        let val = e.target.value;
+                        hexInput.value = val;
+                        textElements[key][stateKey] = val;
+                        renderCanvas();
+                    });
+                });
+
+                // Tombol Tukar Warna
+                document.getElementById(`adv_swap_c_${key}`).addEventListener('click', () => {
+                    // Tukar nilainya di State
+                    const temp = textElements[key].color1;
+                    textElements[key].color1 = textElements[key].color2;
+                    textElements[key].color2 = temp;
+                    
+                    // Update tampilan inputnya (Text & Picker)
+                    document.getElementById(`adv_c1_${key}`).value = textElements[key].color1;
+                    document.getElementById(`adv_cp1_${key}`).value = textElements[key].color1;
+                    
+                    document.getElementById(`adv_c2_${key}`).value = textElements[key].color2;
+                    document.getElementById(`adv_cp2_${key}`).value = textElements[key].color2;
+                    
+                    // Render ulang
+                    renderCanvas();
+                });
+            }
+        }
+
+        // Toggle visibility Panel Lanjutan
+        document.getElementById('toggleAdvanced').addEventListener('change', (e) => {
+            const panel = document.getElementById('advancedPanel');
+            if (e.target.checked) {
+                panel.classList.remove('hidden');
+                panel.classList.add('flex');
+            } else {
+                panel.classList.add('hidden');
+                panel.classList.remove('flex');
+            }
+        });
+
+        // Logika Download Image
+        function downloadCanvas() {
+            const isFullResChecked = document.getElementById('chkFullResolution')?.checked;
+            let finalDataUrl;
+
+            if (isFullResChecked) {
+                // Download ukuran penuh 1200x750 (Resolusi Tinggi)
+                finalDataUrl = canvas.toDataURL('image/jpeg', 0.95);
+            } else {
+                // Download ukuran setengah 600x375 (Default)
+                // Kita buat canvas bayangan untuk mengecilkan gambarnya
+                const offCanvas = document.createElement('canvas');
+                offCanvas.width = 600;
+                offCanvas.height = 375;
+                const offCtx = offCanvas.getContext('2d');
+                
+                // Gambar dari canvas utama ke canvas bayangan dengan ukuran yang lebih kecil
+                offCtx.drawImage(canvas, 0, 0, 600, 375);
+                finalDataUrl = offCanvas.toDataURL('image/jpeg', 0.90);
+            }
+            
+            // Logika format nama file dinamis berdasarkan nama mempelai
+            // Mengubah "Feliz & Felix" atau "Feliz dan Felix" menjadi "feliz-dan-felix"
+            let formattedName = textElements.nama.text
+                .toLowerCase()
+                .replace(/\s*&\s*|\s+and\s+|\s+dan\s+/g, '-dan-') // Tangani kata hubung
+                .replace(/[^a-z0-9\-]/g, '-') // Ganti sisa karakter non-alphanumeric dgn strip
+                .replace(/-+/g, '-') // Hapus strip ganda
+                .replace(/^-|-$/g, ''); // Hapus strip di awal/akhir jika ada
+                
+            let fileName = formattedName ? `thumbnail-${formattedName}` : "thumbnail-undangan";
+
+            // Tambahkan label ukuran HANYA jika HD penuh dicentang (agar membedakan)
+            const sizeLabel = isFullResChecked ? '-full' : '';
+
+            const a = document.createElement('a');
+            a.href = finalDataUrl;
+            // Hasilnya: thumbnail-catinwanita-dan-catinpria.jpg
+            a.download = `${fileName}${sizeLabel}.jpg`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        document.getElementById('btnDownloadHeader').addEventListener('click', downloadCanvas);
+        document.getElementById('btnDownloadMobile').addEventListener('click', downloadCanvas);
+
+        // ==========================================
+        // 4. INISIALISASI & LOAD ASSETS
+        // ==========================================
+        
+        // Pindahkan event onload ke luar agar bisa mendeteksi setiap pergantian tema berulang-ulang
+        bgImage.onload = () => {
+            isReadyToRender = true;
+            // Sembunyikan loading, kembalikan canvas menjadi jelas
+            document.getElementById('loadingIndicator').style.display = 'none';
+            canvas.classList.remove('opacity-0', 'opacity-30');
+            
+            // Render hasil akhirnya
+            renderCanvas();
+        };
+        
+        bgImage.onerror = () => {
+            document.getElementById('loadingIndicator').innerHTML = `<span class="text-red-500">Gagal memuat gambar template. Periksa koneksi internet.</span>`;
+        }
+
+        async function init() {
+            initThemeSelector(); // Panggil fungsi otomatisasi Dropdown
+            bindBasicInputs();
+            buildAdvancedSettings();
+
+            try {
+                // 1. Paksa browser memuat semua font yang ada di FONT_OPTIONS
+                // Ini mengatasi masalah font default canvas tidak ter-render di awal
+                const fontPromises = FONT_OPTIONS.map(font => document.fonts.load(`12px "${font}"`));
+                await Promise.all(fontPromises);
+                
+                // Tunggu semua font benar-benar siap
+                await document.fonts.ready;
+                
+                // 2. Load Gambar Background pertama kali saat web baru dibuka
+                bgImage.src = TEMPLATE_URL;
+
+            } catch (error) {
+                console.error("Error saat inisialisasi:", error);
+            }
+        }
+
+        // Mulai aplikasi
+        init();
+
+    </script>
+</body>
+</html>
