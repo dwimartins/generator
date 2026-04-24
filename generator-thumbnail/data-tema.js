@@ -67,7 +67,7 @@ const daftarTema = {
     "green-shades": {
         nama_tema: "Green Shades",
         
-        template_url: "https://ik.imagekit.io/asetundangan/aset/template-thumbnail/tanpa-foto-green-shades-thumbnail.jpg", 
+        template_url: "https://ik.imagekit.io/asetundangan/aset/template-thumbnail/tanpa-foto-green-shades-thumbnail.jpeg", 
         teks: {
             judul: {
                 y: 200, size: 45, font: "Cinzel", weight: "400",
