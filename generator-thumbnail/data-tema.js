@@ -15,7 +15,7 @@ const daftarTema = {
                 color1: "#92bddd", color2: "#6d97b3"
             },
             lokasi: {
-                y: 595, size: 45, font: "Italiana", weight: "600",
+                y: 595, size: 42, font: "Italiana", weight: "600",
                 color1: "#5b8fa9", color2: "#386175"
             }
         }
@@ -36,7 +36,7 @@ const daftarTema = {
                 color1: "#d9b36d", color2: "#ba843d" 
             },
             lokasi: {
-                y: 595, size: 45, font: "Italiana", weight: "600",
+                y: 595, size: 42, font: "Italiana", weight: "600",
                 color1: "#91652b", color2: "#a67036"
             }
         }
@@ -57,7 +57,7 @@ const daftarTema = {
                 color1: "#e39296", color2: "#bb5772" 
             },
             lokasi: {
-                y: 595, size: 45, font: "Italiana", weight: "600",
+                y: 595, size: 42, font: "Italiana", weight: "600",
                 color1: "#c16d7f", color2: "#d35079"
             }
         }
@@ -78,7 +78,7 @@ const daftarTema = {
                 color1: "#3bb05e", color2: "#1d8b25" 
             },
             lokasi: {
-                y: 595, size: 45, font: "Italiana", weight: "600",
+                y: 595, size: 42, font: "Italiana", weight: "600",
                 color1: "#58964a", color2: "#0f6709"
             }
         }
@@ -99,7 +99,7 @@ const daftarTema = {
                 color1: "#995cb7", color2: "#8d739c" 
             },
             lokasi: {
-                y: 595, size: 45, font: "Italiana", weight: "600",
+                y: 595, size: 42, font: "Italiana", weight: "600",
                 color1: "#9269ad", color2: "#793e98"
             }
         }
