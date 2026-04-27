@@ -302,7 +302,7 @@
             processLog.textContent = "";
 
             try {
-                // PERBAIKAN DI SINI: Nama objek utama adalah FFmpegWASM di v0.12
+                // Nama objek utama adalah FFmpegWASM di v0.12
                 const { FFmpeg } = window.FFmpegWASM;
                 const { fetchFile, toBlobURL } = window.FFmpegUtil;
                 
@@ -326,12 +326,15 @@
                         if (percent > 0) processText.textContent = `Memproses Audio... ${percent}%`;
                     });
 
-                    // Load Core (Versi SINGLE THREAD, tidak butuh SharedArrayBuffer!)
-                    // Gunakan toBlobURL agar script diizinkan berjalan sebagai Worker
-                    const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
+                    // PERBAIKAN CORS PEKERJA (WORKER): 
+                    // Kita harus mengubah file '814.ffmpeg.js' menjadi BlobURL juga agar tidak diblokir Github Pages.
+                    const coreURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
+                    const ffmpegURL = 'https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd';
+                    
                     await ffmpegInstance.load({
-                        coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-                        wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm')
+                        coreURL: await toBlobURL(`${coreURL}/ffmpeg-core.js`, 'text/javascript'),
+                        wasmURL: await toBlobURL(`${coreURL}/ffmpeg-core.wasm`, 'application/wasm'),
+                        classWorkerURL: await toBlobURL(`${ffmpegURL}/814.ffmpeg.js`, 'text/javascript')
                     });
                 }
 
