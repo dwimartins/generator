@@ -299,11 +299,13 @@
             processingStatus.classList.remove('hidden');
             downloadContainer.classList.add('hidden');
             processBar.style.width = '0%';
+            processLog.textContent = "";
 
             try {
                 // Ambil Object FFmpeg dari Window (versi 0.12)
                 const { FFmpeg } = window.FFmpeg;
-                const { fetchFile } = window.FFmpegUtil;
+                // WAJIB panggil toBlobURL untuk mencegah error CORS di GitHub Pages
+                const { fetchFile, toBlobURL } = window.FFmpegUtil;
                 
                 // Inisialisasi jika belum
                 if (!ffmpegInstance) {
@@ -313,6 +315,7 @@
                     // Tangkap Log
                     ffmpegInstance.on('log', ({ message }) => {
                         processLog.textContent = message;
+                        console.log(message); // Tampilkan juga di console untuk debugging
                     });
                     
                     // Tangkap Progress
@@ -325,9 +328,11 @@
                     });
 
                     // Load Core (Versi SINGLE THREAD, tidak butuh SharedArrayBuffer!)
+                    // Gunakan toBlobURL agar script diizinkan berjalan sebagai Worker
+                    const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
                     await ffmpegInstance.load({
-                        coreURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js',
-                        wasmURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.wasm'
+                        coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+                        wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm')
                     });
                 }
 
@@ -388,7 +393,8 @@
 
             } catch (error) {
                 console.error("FFmpeg Error:", error);
-                alert("Gagal memproses audio. Pastikan file tidak rusak atau coba refresh halaman.");
+                processLog.textContent = "Error: " + (error.message || error);
+                alert("Gagal memproses audio. Detail: " + (error.message || error));
                 processText.textContent = "Proses Gagal.";
                 processText.classList.replace('text-blue-400', 'text-red-500');
             } finally {
