@@ -15,9 +15,9 @@
     <script src="https://unpkg.com/wavesurfer.js@7.1.3/dist/wavesurfer.min.js"></script>
     <script src="https://unpkg.com/wavesurfer.js@7.1.3/dist/plugins/regions.min.js"></script>
     
-    <!-- FFmpeg.wasm (v0.12 - Versi Single Thread, TANPA BUTUH SharedArrayBuffer) -->
-    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
-    <script src="https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
+    <!-- FFmpeg.wasm (Menggunakan jsdelivr CDN untuk kestabilan) -->
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
 
     <style>
         body {
@@ -302,7 +302,6 @@
             processLog.textContent = "";
 
             try {
-                // Nama objek utama adalah FFmpegWASM di v0.12
                 const { FFmpeg } = window.FFmpegWASM;
                 const { fetchFile, toBlobURL } = window.FFmpegUtil;
                 
@@ -326,14 +325,16 @@
                         if (percent > 0) processText.textContent = `Memproses Audio... ${percent}%`;
                     });
 
-                    // PERBAIKAN CORS PEKERJA (WORKER): 
-                    // Kita harus mengubah file '814.ffmpeg.js' menjadi BlobURL juga agar tidak diblokir Github Pages.
-                    const coreURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
-                    const ffmpegURL = 'https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd';
+                    // PERBAIKAN FINAL UNTUK GITHUB PAGES:
+                    // Gunakan CDN jsdelivr yang lebih stabil
+                    const coreURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd';
+                    const ffmpegURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd';
                     
                     await ffmpegInstance.load({
-                        coreURL: await toBlobURL(`${coreURL}/ffmpeg-core.js`, 'text/javascript'),
-                        wasmURL: await toBlobURL(`${coreURL}/ffmpeg-core.wasm`, 'application/wasm'),
+                        // PENTING: Gunakan URL link langsung agar Web Worker dapat menarik (importScripts) secara alami
+                        coreURL: `${coreURL}/ffmpeg-core.js`,
+                        wasmURL: `${coreURL}/ffmpeg-core.wasm`,
+                        // HANYA file Worker yang wajib diubah ke Blob lokal untuk melewati pemblokiran DOM 
                         classWorkerURL: await toBlobURL(`${ffmpegURL}/814.ffmpeg.js`, 'text/javascript')
                     });
                 }
