@@ -15,12 +15,9 @@
     <script src="https://unpkg.com/wavesurfer.js@7.1.3/dist/wavesurfer.min.js"></script>
     <script src="https://unpkg.com/wavesurfer.js@7.1.3/dist/plugins/regions.min.js"></script>
     
-    <!-- FFmpeg.wasm (v0.11.6 - Versi paling stabil untuk CDN) -->
-    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
-
-    <!-- MAGIC WORKAROUND UNTUK GITHUB PAGES -->
-    <!-- Script ini akan otomatis memberikan izin memori (COOP/COEP) yang dibutuhkan FFmpeg -->
-    <script src="https://unpkg.com/coi-serviceworker@0.1.6/coi-serviceworker.js"></script>
+    <!-- FFmpeg.wasm (v0.12 - Versi Single Thread, TANPA BUTUH SharedArrayBuffer) -->
+    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
+    <script src="https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
 
     <style>
         body {
@@ -38,17 +35,11 @@
     <!-- Header -->
     <header class="bg-slate-800 border-b border-slate-700 py-4 px-6 shadow-md">
         <h1 class="text-2xl font-bold text-blue-400"><i class="fas fa-music mr-2"></i> AudioCutter Pro</h1>
-        <p class="text-sm text-slate-400 mt-1">Potong, Fade, dan Kompres MP3 langsung di browser.</p>
+        <p class="text-sm text-slate-400 mt-1">Potong, Fade, dan Kompres MP3 langsung di browser (GitHub Pages Ready).</p>
     </header>
 
     <main class="flex-grow p-6 max-w-5xl mx-auto w-full flex flex-col gap-6">
         
-        <!-- Peringatan Keamanan (SharedArrayBuffer) -->
-        <div id="sab-warning" class="hidden bg-yellow-900 border border-yellow-700 text-yellow-200 px-4 py-3 rounded rounded-lg shadow-sm" role="alert">
-            <p class="font-bold"><i class="fas fa-info-circle mr-1"></i> Info Sistem</p>
-            <p class="text-sm">Browser kamu mungkin sedang membatasi memori tingkat tinggi. Namun jangan khawatir, sistem auto-recovery (COI) sedang mencoba mengatasinya. Jika ini adalah kunjungan pertamamu, halaman mungkin akan melakukan <span class="font-bold text-white">refresh otomatis 1x</span> untuk mengaktifkan mesin Audio.</p>
-        </div>
-
         <!-- Section 1: Upload -->
         <section class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg">
             <h2 class="text-xl font-semibold mb-4 border-b border-slate-600 pb-2">1. Pilih File MP3</h2>
@@ -130,7 +121,7 @@
             </div>
         </section>
 
-        <!-- Section 3: Proses & Download (Sembunyi sebelum upload) -->
+        <!-- Section 3: Proses & Download -->
         <section id="process-section" class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg hidden">
             <h2 class="text-xl font-semibold mb-4 border-b border-slate-600 pb-2">3. Ekspor Hasil</h2>
             
@@ -171,7 +162,7 @@
         let activeRegion = null;
         let originalFile = null;
         let originalFileSizeMB = 0;
-        let ffmpeg = null;
+        let ffmpegInstance = null; // FFmpeg v0.12 instance
 
         // --- 2. Referensi Elemen DOM ---
         const fileInput = document.getElementById('audio-upload');
@@ -199,13 +190,6 @@
         const downloadContainer = document.getElementById('download-container');
         const btnDownload = document.getElementById('btn-download');
         const finalSizeDisp = document.getElementById('final-size');
-        
-        const sabWarning = document.getElementById('sab-warning');
-
-        // Cek dukungan SharedArrayBuffer untuk Peringatan Dini
-        if (typeof SharedArrayBuffer === 'undefined') {
-            sabWarning.classList.remove('hidden');
-        }
 
         // --- 3. Setup Wavesurfer (Timeline Editor) ---
         function initWavesurfer() {
@@ -225,14 +209,12 @@
                 normalize: true,
             });
 
-            // Inisialisasi Plugin Regions
             wsRegions = wavesurfer.registerPlugin(WaveSurfer.Regions.create());
 
             wavesurfer.on('ready', () => {
                 waveformLoading.classList.add('hidden');
                 const duration = wavesurfer.getDuration();
                 
-                // Buat region default di tengah lagu berdurasi 15 detik (atau secukupnya)
                 const start = duration > 30 ? 10 : 0;
                 const end = duration > 30 ? 25 : duration;
                 
@@ -240,7 +222,7 @@
                 activeRegion = wsRegions.addRegion({
                     start: start,
                     end: end,
-                    color: 'rgba(59, 130, 246, 0.3)', // Biru transparan
+                    color: 'rgba(59, 130, 246, 0.3)',
                     resize: true,
                     drag: true,
                 });
@@ -248,7 +230,6 @@
                 updateRegionText(start, end);
             });
 
-            // Update text saat region digeser
             wsRegions.on('region-updated', (region) => {
                 updateRegionText(region.start, region.end);
             });
@@ -260,8 +241,6 @@
         }
 
         // --- 4. Event Listeners ---
-
-        // Saat File diupload
         fileInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (!file) return;
@@ -269,31 +248,26 @@
             originalFile = file;
             originalFileSizeMB = file.size / (1024 * 1024);
 
-            // Tampilkan Info File
             fileNameDisp.textContent = file.name;
             fileSizeDisp.textContent = originalFileSizeMB.toFixed(2) + ' MB';
             fileInfo.classList.remove('hidden');
 
-            // Logika Kompresi: Jika > 4MB, tampilkan badge
             if (originalFileSizeMB > 4) {
                 compressBadge.classList.remove('hidden');
             } else {
                 compressBadge.classList.add('hidden');
             }
 
-            // Tampilkan Section
             editorSection.classList.remove('hidden');
             processSection.classList.remove('hidden');
             waveformLoading.classList.remove('hidden');
-            downloadContainer.classList.add('hidden'); // Reset
+            downloadContainer.classList.add('hidden');
 
-            // Load ke Wavesurfer
             initWavesurfer();
             const objectUrl = URL.createObjectURL(file);
             wavesurfer.load(objectUrl);
         });
 
-        // Tombol Preview
         let isPlayingRegion = false;
         btnPlayRegion.addEventListener('click', () => {
             if (!activeRegion) return;
@@ -309,7 +283,6 @@
             }
         });
 
-        // Reset tombol play jika lagu selesai dimainkan
         setInterval(() => {
             if(wavesurfer && !wavesurfer.isPlaying() && isPlayingRegion) {
                 btnPlayRegion.innerHTML = '<i class="fas fa-play mr-1"></i> Putar Hasil Crop';
@@ -317,47 +290,50 @@
             }
         }, 500);
 
-        // --- 5. Logika FFmpeg (Eksekusi Akhir) ---
+        // --- 5. Logika FFmpeg (Eksekusi Akhir - v0.12 API) ---
         btnProcess.addEventListener('click', async () => {
             if (!originalFile || !activeRegion) return;
 
-            // Kunci UI
             btnProcess.disabled = true;
             btnProcess.classList.add('opacity-50', 'cursor-not-allowed');
             processingStatus.classList.remove('hidden');
             downloadContainer.classList.add('hidden');
+            processBar.style.width = '0%';
 
             try {
-                // Inisialisasi FFmpeg jika belum
-                if (!ffmpeg) {
-                    processText.textContent = "Mengunduh Engine FFmpeg (Hanya sekali)...";
-                    const { createFFmpeg, fetchFile } = FFmpeg;
-                    ffmpeg = createFFmpeg({ 
-                        log: true,
-                        corePath: 'https://unpkg.com/@ffmpeg/core@0.11.0/dist/ffmpeg-core.js'
-                    });
+                // Ambil Object FFmpeg dari Window (versi 0.12)
+                const { FFmpeg } = window.FFmpeg;
+                const { fetchFile } = window.FFmpegUtil;
+                
+                // Inisialisasi jika belum
+                if (!ffmpegInstance) {
+                    processText.textContent = "Mengunduh Engine Audio (Hanya sekali)...";
+                    ffmpegInstance = new FFmpeg();
                     
-                    // Tangkap log FFmpeg untuk ditampilkan ke user
-                    ffmpeg.setLogger(({ type, message }) => {
+                    // Tangkap Log
+                    ffmpegInstance.on('log', ({ message }) => {
                         processLog.textContent = message;
                     });
                     
-                    // Progress bar FFmpeg
-                    ffmpeg.setProgress(({ ratio }) => {
-                        let percent = Math.round(ratio * 100);
+                    // Tangkap Progress
+                    ffmpegInstance.on('progress', ({ progress, time }) => {
+                        let percent = Math.round(progress * 100);
                         if(percent < 0) percent = 0;
                         if(percent > 100) percent = 100;
                         processBar.style.width = `${percent}%`;
                         if (percent > 0) processText.textContent = `Memproses Audio... ${percent}%`;
                     });
 
-                    await ffmpeg.load();
+                    // Load Core (Versi SINGLE THREAD, tidak butuh SharedArrayBuffer!)
+                    await ffmpegInstance.load({
+                        coreURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js',
+                        wasmURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.wasm'
+                    });
                 }
 
                 processText.textContent = "Menyiapkan File...";
                 processBar.style.width = '5%';
 
-                // Ambil Nilai dari UI
                 const startTime = activeRegion.start;
                 const endTime = activeRegion.end;
                 const duration = endTime - startTime;
@@ -365,57 +341,45 @@
                 const fadeInStr = inputFadeIn.value;
                 const fadeOutStr = inputFadeOut.value;
 
-                // Tulis file ke memori virtual FFmpeg
-                const { fetchFile } = FFmpeg;
-                ffmpeg.FS('writeFile', 'input.mp3', await fetchFile(originalFile));
+                // Tulis file ke memori (API v0.12)
+                await ffmpegInstance.writeFile('input.mp3', await fetchFile(originalFile));
 
                 processText.textContent = "Menerapkan Potongan dan Efek...";
                 
-                // Susun Mantra Command FFmpeg
-                // Logika Filter Audio:
-                // 1. afade masuk di detik ke-0 (karena file sudah dipotong di awal pakai -ss)
-                // 2. afade keluar dimulai dari (durasi - waktu_fade_out)
                 const fadeFilter = `afade=t=in:ss=0:d=${fadeInStr},afade=t=out:st=${(duration - parseFloat(fadeOutStr)).toFixed(3)}:d=${fadeOutStr}`;
                 
                 let commandArgs = [
-                    '-ss', startTime.toString(), // Mulai potong (Taruh sebelum -i agar cepat)
-                    '-i', 'input.mp3',           // File input
-                    '-t', duration.toString(),   // Durasi pemotongan
-                    '-af', fadeFilter            // Terapkan efek fade
+                    '-ss', startTime.toString(), 
+                    '-i', 'input.mp3',           
+                    '-t', duration.toString(),   
+                    '-af', fadeFilter            
                 ];
 
-                // Tambahkan kompresi jika file asli > 4MB
                 if (originalFileSizeMB > 4) {
-                    // Paksa bitrate turun ke 128kbps
                     commandArgs.push('-b:a', '128k'); 
                 }
-
-                // File output
                 commandArgs.push('output.mp3');
 
-                // EKSEKUSI FFMPEG
-                await ffmpeg.run(...commandArgs);
+                // Eksekusi Command (API v0.12)
+                await ffmpegInstance.exec(commandArgs);
 
                 processText.textContent = "Menyiapkan File Unduhan...";
                 processBar.style.width = '100%';
 
-                // Baca hasil dari memori
-                const data = ffmpeg.FS('readFile', 'output.mp3');
+                // Baca hasil (API v0.12)
+                const data = await ffmpegInstance.readFile('output.mp3');
                 
-                // Buat file yang bisa diunduh
                 const blob = new Blob([data.buffer], { type: 'audio/mp3' });
                 const url = URL.createObjectURL(blob);
                 
-                // Bersihkan memori FFmpeg
-                ffmpeg.FS('unlink', 'input.mp3');
-                ffmpeg.FS('unlink', 'output.mp3');
+                // Bersihkan memori
+                await ffmpegInstance.deleteFile('input.mp3');
+                await ffmpegInstance.deleteFile('output.mp3');
 
-                // Tampilkan Tombol Download
                 const finalSizeMB = (blob.size / (1024 * 1024)).toFixed(2);
                 finalSizeDisp.textContent = `${finalSizeMB} MB`;
                 btnDownload.href = url;
                 
-                // Set nama file download: nama_asli_edit.mp3
                 let rawName = originalFile.name.replace(/\.[^/.]+$/, "");
                 btnDownload.download = `${rawName}_edit.mp3`;
 
@@ -424,16 +388,14 @@
 
             } catch (error) {
                 console.error("FFmpeg Error:", error);
-                alert("Terjadi kesalahan saat memproses audio. Pastikan kamu membuka lewat Local Server jika mengalami masalah keamanan browser.");
+                alert("Gagal memproses audio. Pastikan file tidak rusak atau coba refresh halaman.");
                 processText.textContent = "Proses Gagal.";
                 processText.classList.replace('text-blue-400', 'text-red-500');
             } finally {
-                // Buka Kunci UI
                 btnProcess.disabled = false;
                 btnProcess.classList.remove('opacity-50', 'cursor-not-allowed');
             }
         });
-
     </script>
 </body>
 </html>
