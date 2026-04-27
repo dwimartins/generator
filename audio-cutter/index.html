@@ -302,9 +302,8 @@
             processLog.textContent = "";
 
             try {
-                // Ambil Object FFmpeg dari Window (versi 0.12)
-                const { FFmpeg } = window.FFmpeg;
-                // WAJIB panggil toBlobURL untuk mencegah error CORS di GitHub Pages
+                // PERBAIKAN DI SINI: Nama objek utama adalah FFmpegWASM di v0.12
+                const { FFmpeg } = window.FFmpegWASM;
                 const { fetchFile, toBlobURL } = window.FFmpegUtil;
                 
                 // Inisialisasi jika belum
